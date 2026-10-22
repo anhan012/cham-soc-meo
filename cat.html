@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sổ Tay Y Tế & Chăm Sóc - Bé Xám</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Be Vietnam Pro & Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Quicksand', sans-serif;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-amber-50/40 text-slate-800 min-h-screen pb-16">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="bg-white/80 backdrop-blur-md border-b border-amber-100 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm">
+          <i class="fa-solid fa-cat"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            Bé Xám <span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">Đực • Lai ALN</span>
+          </h1>
+          <p class="text-xs text-slate-500">Nhật ký & Lịch trình y tế theo dõi sức khỏe</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i>
+          <span class="hidden sm:inline">In sổ tay</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 pt-6 space-y-6">
+
+    <!-- ================= THÔNG BÁO QUAN TRỌNG: ĐÃ XỔ GIUN 17/10 ================= -->
+    <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-xl shadow-xs">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="text-base font-bold text-emerald-950 font-heading">ĐÃ XỔ GIUN THÀNH CÔNG NGÀY 17/10/2026</h2>
+            <span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md font-bold">1/4 viên Sanpet</span>
+          </div>
+          <p class="text-xs sm:text-sm text-emerald-800 mt-1 leading-relaxed">
+            Hôm nay bé <strong>KHÔNG CẦN</strong> uống lại thuốc xổ giun để tránh quá liều. Hiện tại chỉ cần giữ ấm, quan sát phân khuôn đẹp, theo dõi mắt/mũi để chuẩn bị tiêm vaccine Mũi 1 khi tròn 2 tháng tuổi!
+          </p>
+        </div>
+      </div>
+      <div class="shrink-0 w-full sm:w-auto bg-white/80 border border-emerald-200 rounded-xl px-4 py-2 text-center">
+        <span class="text-[11px] uppercase tracking-wider text-emerald-700 font-bold block">Đợt xổ giun kế tiếp</span>
+        <span class="text-sm font-bold text-emerald-900 font-heading">17/11/2026 (tròn 1 tháng)</span>
+      </div>
+    </div>
+
+    <!-- ================= THẺ THÔNG TIN BÉ & BỘ ĐẾM TUỔI ================= -->
+    <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        
+        <!-- Cột Avatar & Thông tin cá nhân -->
+        <div class="flex items-center gap-4">
+          <!-- Khung ảnh có nút đổi avatar -->
+          <div class="relative group cursor-pointer" onclick="openAvatarModal()" title="Bấm để đổi ảnh đại diện cho bé">
+            <img id="catAvatar" 
+                 src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=400&q=80" 
+                 alt="Bé Xám" 
+                 class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover ring-4 ring-amber-100 group-hover:ring-amber-300 transition duration-300 shadow-sm">
+            <div class="absolute inset-0 bg-black/40 rounded-2xl flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 text-white text-xs font-semibold">
+              <i class="fa-solid fa-camera mb-1"></i>
+              <span>Đổi ảnh</span>
+            </div>
+            <button class="absolute -bottom-1 -right-1 w-7 h-7 bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center text-xs shadow-md border-2 border-white transition">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+
+          <!-- Thông tin cơ bản -->
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-800 font-heading">Bé Xám</h2>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                <i class="fa-solid fa-mars mr-1"></i>Đực
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium">Giống: Anh lông ngắn lai (ALN) • Màu lông: Xám tro</p>
+            <div class="flex items-center gap-1.5 text-xs text-slate-600 pt-1">
+              <i class="fa-regular fa-calendar-days text-amber-500"></i>
+              <span>Sinh ngày: <strong class="text-slate-800">29/08/2026</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Các chỉ số thống kê & Đếm tuổi -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100 text-center">
+          <div>
+            <span class="text-[11px] text-slate-500 block font-medium">Số ngày tuổi</span>
+            <span id="catDaysAge" class="text-xl sm:text-2xl font-bold text-amber-600 font-heading">54</span>
+            <span id="catWeeksAge" class="text-[10px] text-slate-400 block font-medium">7 tuần 5 ngày</span>
+          </div>
+          <div class="border-x border-slate-200 px-2 sm:px-4">
+            <span class="text-[11px] text-slate-500 block font-medium">Cân nặng</span>
+            <span class="text-xl sm:text-2xl font-bold text-slate-800 font-heading">0.9 <span class="text-xs font-normal">kg</span></span>
+            <span class="text-[10px] text-slate-400 block font-medium">~ 9 lạng</span>
+          </div>
+          <div>
+            <span class="text-[11px] text-slate-500 block font-medium">Mốc tròn 2 tháng</span>
+            <span class="text-base sm:text-lg font-bold text-teal-600 font-heading">29/10/2026</span>
+            <span id="daysUntilTwoMonths" class="text-[10px] text-teal-600 block font-medium">Còn 7 ngày</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= NGUYÊN TẮC VÀNG VÀ CHUỖI QUY TRÌNH (ĐÃ SỬA LỖI MŨI TÊN) ================= -->
+      <div class="mt-5 pt-4 border-t border-slate-100 bg-amber-50/70 rounded-2xl p-4 border border-amber-200/80">
+        <div class="flex items-start gap-2.5">
+          <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-base shrink-0"></i>
+          <div class="w-full">
+            <h3 class="text-xs sm:text-sm font-bold text-amber-950 font-heading uppercase tracking-wide">
+              Nguyên tắc vàng phân tách thời gian:
+            </h3>
+            <p class="text-xs text-amber-900 mt-0.5 leading-relaxed">
+              Tuyệt đối <strong>KHÔNG</strong> tắm, xổ giun và tiêm phòng cùng một ngày hoặc quá sát nhau vì mèo con sức đề kháng còn non nớt, rất dễ bị sốc phản vệ, hạ thân nhiệt dẫn đến tử vong.
+            </p>
+
+            <!-- Khung chuỗi quy trình dạng Badge + Mũi tên trực quan (Hoàn toàn không có LaTeX) -->
+            <div class="mt-3 pt-3 border-t border-amber-200/60">
+              <span class="text-[11px] font-bold text-amber-900 block mb-2 uppercase tracking-wider">Khoảng cách chuẩn bắt buộc:</span>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-bold shadow-2xs">
+                  <i class="fa-solid fa-shower text-sky-500"></i> Tắm
+                </span>
+                
+                <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
+                
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-semibold shadow-2xs">
+                  <i class="fa-regular fa-clock text-amber-600"></i> Nghỉ 2–3 ngày
+                </span>
+
+                <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
+
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-bold shadow-2xs">
+                  <i class="fa-solid fa-capsules text-amber-600"></i> Xổ giun
+                </span>
+
+                <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
+
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-semibold shadow-2xs">
+                  <i class="fa-solid fa-shield-virus text-indigo-500"></i> Cách ly 7 ngày
+                </span>
+
+                <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
+
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-xs">
+                  <i class="fa-solid fa-syringe"></i> Tiêm ngừa
+                </span>
+              </div>
+            </div>
+
+            <!-- Ghi chú riêng cho bé Xám hiện tại -->
+            <div class="mt-3 p-2.5 bg-white/90 rounded-xl border border-amber-200 text-xs text-slate-700 flex items-start gap-2">
+              <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+              <div>
+                <strong>Áp dụng cho Bé Xám đợt này:</strong> Vì bé <strong>đã xổ giun ngày 17/10</strong>, nên đến ngày <strong>29/10</strong> (đủ 2 tháng tuổi), bạn tắm cho bé vào buổi trưa ấm → cho nghỉ 2–3 ngày giữ ấm → không cần xổ giun lại gấp mà có thể đưa đi <strong>tiêm Mũi 1 ngay trong tuần đầu tháng 11</strong> nếu bé khỏe mạnh!
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= BỐ CỤC 2 CỘT NỘI DUNG CHÍNH ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- CỘT TRÁI (7 PHẦN): LỊCH TRÌNH Y TẾ & NHẬT KÝ -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- CARD 1: TIMELINE LỊCH TRÌNH Y TẾ -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <i class="fa-solid fa-calendar-check"></i>
+              </div>
+              <h3 class="text-base font-bold text-slate-800 font-heading">Lịch trình y tế & Các mốc quan trọng</h3>
+            </div>
+            <span class="text-xs text-slate-400">Tự động lưu vào máy</span>
+          </div>
+
+          <div class="space-y-3" id="timelineContainer">
+
+            <!-- Item 1: Đã xổ giun -->
+            <div class="p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/50 flex items-start gap-3">
+              <input type="checkbox" checked disabled class="mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-emerald-900 line-through">17/10/2026: Xổ giun đợt 1</span>
+                  <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-bold">Đã hoàn thành</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Uống 1/4 viên Sanpet màu vàng. Bé đã qua ngày theo dõi phân an toàn.</p>
+              </div>
+            </div>
+
+            <!-- Item 2: Mốc 2 tháng tuổi -->
+            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-300 transition flex items-start gap-3">
+              <input type="checkbox" id task-id="task_2months" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">29/10/2026: Đủ 2 tháng tuổi - Tắm lần đầu</span>
+                  <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-semibold">Mốc quan trọng</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Chỉ tắm vào <strong>buổi trưa có nắng ấm</strong>, phòng kín gió. Tắm nhanh và <strong>sấy khô kiệt chân lông</strong> lập tức.</p>
+              </div>
+            </div>
+
+            <!-- Item 3: Tiêm phòng mũi 1 -->
+            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 transition flex items-start gap-3">
+              <input type="checkbox" id task-id="task_vaccine1" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">01/11 - 05/11/2026: Tiêm ngừa Mũi 1 (4 bệnh)</span>
+                  <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-semibold">Vaccine</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Cách xa đợt tắm 2-3 ngày và đợt xổ giun > 10 ngày. Chỉ đưa đi tiêm khi bé <strong>khỏe mạnh 100%</strong>, mắt sáng, không hắt xì sổ mũi.</p>
+              </div>
+            </div>
+
+            <!-- Item 4: Tập ăn dặm -->
+            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-teal-300 transition flex items-start gap-3">
+              <input type="checkbox" id task-id="task_food" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-teal-600 focus:ring-teal-500 cursor-pointer">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">10/11 - 12/11/2026: Tập ăn dặm (Pate/Hạt)</span>
+                  <span class="text-[10px] bg-teal-100 text-teal-800 px-2 py-0.5 rounded-full font-semibold">Dinh dưỡng</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Cách mũi tiêm 1 tuần mới bắt đầu tập ăn. Chét một chút súp thưởng/pate lên ngón tay đút mép miệng để bé tự liếm.</p>
+              </div>
+            </div>
+
+            <!-- Item 5: Xổ giun đợt 2 -->
+            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-300 transition flex items-start gap-3">
+              <input type="checkbox" id task-id="task_deworm2" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">17/11/2026: Xổ giun định kỳ đợt 2</span>
+                  <span class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-semibold">Định kỳ</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Tròn 1 tháng kể từ ngày 17/10. Cân lại bé để chia liều Sanpet (1 viên cho 4kg thể trọng).</p>
+              </div>
+            </div>
+
+            <!-- Item 6: Tiêm Mũi 2 + Dại -->
+            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 transition flex items-start gap-3">
+              <input type="checkbox" id task-id="task_vaccine2" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">15/12 - 30/12/2026: Tiêm Mũi 2 + Mũi Dại</span>
+                  <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-semibold">Cách Mũi 1 từ 6-8 tuần</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Tiêm vaccine 4 bệnh mũi 2 kèm mũi phòng bệnh Dại đầu tiên.</p>
+              </div>
+            </div>
+
+            <!-- Item 7: Tiêm Mũi 3 -->
+            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 transition flex items-start gap-3">
+              <input type="checkbox" id task-id="task_vaccine3" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800">Tháng 02/2027: Tiêm Mũi 3 (Mũi hoàn tất năm 1)</span>
+                  <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-semibold">Trước 1 tuổi</span>
+                </div>
+                <p class="text-xs text-slate-600 mt-0.5">Cách Mũi 2 từ 6-8 tuần. Hoàn thành 3 mũi 4 bệnh + dại trước 1 tuổi. Sau đó mỗi năm chỉ chích nhắc 1 lần.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CARD 2: NHẬT KÝ THEO DÕI SỨC KHỎE NHANH HÀNG NGÀY -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
+                <i class="fa-solid fa-notes-medical"></i>
+              </div>
+              <h3 class="text-base font-bold text-slate-800 font-heading">Nhật ký theo dõi phân & sức khỏe hôm nay</h3>
+            </div>
+            <button onclick="clearHealthLogs()" class="text-xs text-slate-400 hover:text-red-500 transition">Xóa lịch sử</button>
+          </div>
+
+          <!-- Form ghi nhận nhanh -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Tình trạng phân:</label>
+                <select id="stoolStatus" class="w-full text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-teal-500">
+                  <option value="Phân khuôn, chắc đẹp (Chuẩn)">🟢 Phân khuôn, chắc đẹp (Chuẩn)</option>
+                  <option value="Phân sệt nhẹ (Cần theo dõi)">🟡 Phân sệt nhẹ (Cần theo dõi)</option>
+                  <option value="Tiêu chảy, phân lỏng (Báo động)">🔴 Tiêu chảy, phân lỏng (Cần uống thuốc)</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Mắt & Hô hấp:</label>
+                <select id="eyeStatus" class="w-full text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-teal-500">
+                  <option value="Mắt trong, lanh lợi, không sốt">🟢 Mắt trong, lanh lợi, không sốt</option>
+                  <option value="Đỏ viền mắt / Chảy nước mắt nhẹ">🟡 Đỏ viền mắt / Chảy nước mắt</option>
+                  <option value="Hắt xì, thở khó, sốt, khập khiễng">🔴 Cảm sốt / Hắt xì / Đi khập khiễng</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <input type="text" id="logNote" placeholder="Ghi chú thêm (VD: bé ăn ngoan, chạy nhảy nhiều...)" class="w-full text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-teal-500">
+            </div>
+            <button onclick="saveHealthLog()" class="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-xs">
+              <i class="fa-solid fa-plus"></i> Lưu nhật ký hôm nay
+            </button>
+          </div>
+
+          <!-- Danh sách log đã lưu -->
+          <div class="mt-4 space-y-2 max-h-48 overflow-y-auto pr-1" id="healthLogList">
+            <!-- Tự động sinh bởi JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CỘT PHẢI (5 PHẦN): TỦ THUỐC, TÍNH LIỀU & DINH DƯỠNG -->
+      <div class="lg:col-span-5 space-y-6">
+
+        <!-- CARD 3: TỦ THUỐC & CÔNG CỤ TÍNH LIỀU SANPET -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <i class="fa-solid fa-pills"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-800 font-heading">Tủ thuốc & Công cụ tính liều</h3>
+          </div>
+
+          <!-- Công cụ tính liều Sanpet -->
+          <div class="bg-amber-500/10 border border-amber-300/80 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-amber-950 uppercase">Viên vàng Sanpet (Xổ giun)</span>
+              <span class="text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded">Chuẩn: 1 viên/4kg</span>
+            </div>
+            <p class="text-xs text-amber-900 mb-3">Nhập cân nặng hiện tại để tự động tính phần viên cần uống:</p>
+            <div class="flex items-center gap-3">
+              <div class="relative flex-1">
+                <input type="number" step="0.1" id="catWeightInput" value="0.9" oninput="calculateSanpetDose()" class="w-full bg-white text-slate-800 font-bold text-sm border border-amber-300 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400">
+                <span class="absolute right-3 top-2 text-xs font-bold text-slate-400">kg</span>
+              </div>
+              <div class="bg-white border border-amber-300 rounded-xl px-4 py-2 text-center shrink-0">
+                <span class="text-[10px] text-slate-400 block font-medium">Liều dùng:</span>
+                <span id="sanpetDoseResult" class="text-sm font-bold text-amber-700">1/4 viên</span>
+              </div>
+            </div>
+            <p class="text-[11px] text-amber-800 mt-2 italic">* Bé 9 lạng (0.9kg) uống chuẩn 1/4 viên. Đợt tới cân lại bé trước khi cho uống.</p>
+          </div>
+
+          <!-- Chi tiết các thuốc khác -->
+          <div class="mt-4 space-y-3">
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+              <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-teal-500 inline-block"></span> Gói xanh vàng (Kháng sinh phổ rộng)
+              </h4>
+              <p class="text-xs text-slate-600 mt-1">Đặc trị tiêu chảy, ói mửa, viêm phổi hoặc khi bị giun nặng dẫn đến rối loạn tiêu hóa.</p>
+            </div>
+
+            <!-- PHÁC ĐỒ CẢM / ĐAU MẮT -->
+            <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-2xl space-y-2">
+              <div class="flex items-center gap-1.5 text-rose-900 font-bold text-xs">
+                <i class="fa-solid fa-kit-medical text-rose-600"></i>
+                <span>PHÁC ĐỒ CẤP CỨU KHI BỊ CẢM HOẶC ĐAU MẮT</span>
+              </div>
+              <div class="text-[11px] text-slate-700 space-y-1.5">
+                <div class="p-2 bg-white/80 rounded-xl">
+                  <strong class="text-rose-800">1. Đau mắt, chảy nước mắt, đỏ mí:</strong><br>
+                  Pha <strong>1/2 gói xanh vàng + 7ml nước</strong>. Đút bé uống <strong>1ml/lần, 3 lần/ngày</strong> (uống đủ 4 cữ là ổn).
+                </div>
+                <div class="p-2 bg-white/80 rounded-xl">
+                  <strong class="text-rose-800">2. Cảm nặng (Sốt, hắt xì, thở khó, đi khập khiễng):</strong><br>
+                  Phối hợp: <strong>1 viên Decolgen vàng + 1 viên bạc + 1/2 gói xanh vàng + nước</strong>. Đút <strong>3 lần/ngày trong 2 ngày</strong> (phải uống đúng giờ như phác đồ điều trị virus).
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: CẨM NANG DINH DƯỠNG & CẤM GAN -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+              <i class="fa-solid fa-bowl-food"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-800 font-heading">Chế độ dinh dưỡng & Lưu ý cấm kỵ</h3>
+          </div>
+
+          <div class="space-y-3">
+            <!-- Hạt khuyên dùng -->
+            <div>
+              <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5 mb-1.5">
+                <i class="fa-solid fa-circle-check text-emerald-500"></i> Hạt khô dòng KITTEN (an toàn cho hệ tiêu hóa):
+              </span>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">Me-O Kitten</span>
+                <span class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">Mister Donut Kitten</span>
+                <span class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">N&D Kitten</span>
+                <span class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">Reflex Kitten</span>
+                <span class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">Today Dinner Kitten</span>
+              </div>
+            </div>
+
+            <!-- Hạt cấm -->
+            <div class="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-900">
+              <span class="font-bold flex items-center gap-1">
+                <i class="fa-solid fa-ban text-red-600"></i> TUYỆT ĐỐI TRÁNH:
+              </span>
+              <p class="mt-0.5 text-[11px] text-red-800">
+                <strong>Minino</strong> (gây tiêu chảy cấp) và <strong>Langlike</strong> (nguy cơ cao gây sỏi thận ở mèo).
+              </p>
+            </div>
+
+            <!-- Công thức Pate chuẩn & Cấm gan -->
+            <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-xl text-xs space-y-1.5">
+              <span class="font-bold text-amber-950 flex items-center gap-1">
+                <i class="fa-solid fa-utensils text-amber-600"></i> Công thức pate tươi an toàn:
+              </span>
+              <p class="text-[11px] text-slate-700 leading-relaxed">
+                Xay hấp: <strong>Ức gà + Cá diêu hồng + Bí đỏ hồ lô</strong> (hỗ trợ tạo men đường ruột cực tốt).
+              </p>
+              <div class="p-2 bg-red-100/70 border border-red-300 rounded-lg text-red-900 text-[11px] font-medium">
+                ⚠️ <strong>CẤM NẤU GAN (gà/heo):</strong> Gan giữ vi khuẩn và ấu trùng giun rất dai dẳng, luộc kỹ vẫn khó sạch, mèo ăn vào rất dễ tái nhiễm giun sán!
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= MODAL ĐỔI ẢNH ĐẠI DIỆN ================= -->
+  <div id="avatarModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-150">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-800 font-heading flex items-center gap-2">
+          <i class="fa-solid fa-camera text-amber-500"></i> Đổi ảnh đại diện cho Bé Xám
+        </h3>
+        <button onclick="closeAvatarModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-sm transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Tải từ thiết bị -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">1. Tải ảnh từ điện thoại / máy tính:</label>
+        <input type="file" id="avatarFileInput" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
+      </div>
+
+      <!-- Dán link ảnh -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">2. Hoặc dán đường dẫn (URL) ảnh:</label>
+        <div class="flex gap-2">
+          <input type="text" id="avatarUrlInput" placeholder="https://example.com/meo-xam.jpg" class="flex-1 text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+          <button onclick="applyUrlAvatar()" class="px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold">Dùng URL</button>
+        </div>
+      </div>
+
+      <!-- Preset mèo xám dễ thương -->
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">3. Hoặc chọn mẫu mèo con xám có sẵn:</label>
+        <div class="grid grid-cols-5 gap-2">
+          <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=300&q=80" onclick="setPresetAvatar(this.src)" class="w-14 h-14 rounded-xl object-cover cursor-pointer hover:ring-2 hover:ring-amber-500 transition shadow-2xs">
+          <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=300&q=80" onclick="setPresetAvatar(this.src)" class="w-14 h-14 rounded-xl object-cover cursor-pointer hover:ring-2 hover:ring-amber-500 transition shadow-2xs">
+          <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=300&q=80" onclick="setPresetAvatar(this.src)" class="w-14 h-14 rounded-xl object-cover cursor-pointer hover:ring-2 hover:ring-amber-500 transition shadow-2xs">
+          <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=300&q=80" onclick="setPresetAvatar(this.src)" class="w-14 h-14 rounded-xl object-cover cursor-pointer hover:ring-2 hover:ring-amber-500 transition shadow-2xs">
+          <img src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&w=300&q=80" onclick="setPresetAvatar(this.src)" class="w-14 h-14 rounded-xl object-cover cursor-pointer hover:ring-2 hover:ring-amber-500 transition shadow-2xs">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+        <button onclick="resetDefaultAvatar()" class="text-xs text-rose-500 hover:underline font-semibold">Khôi phục mặc định</button>
+        <button onclick="closeAvatarModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=400&q=80";
+    const BIRTH_DATE = new Date(2026, 7, 29); // 29/08/2026 (Month index 7 là tháng 8)
+    const TWO_MONTHS_DATE = new Date(2026, 9, 29); // 29/10/2026
+
+    // Tính toán số ngày tuổi và ngày đến mốc 2 tháng
+    function updateAgeMetrics() {
+      const today = new Date(); // Thời gian thực
+      const diffTime = today - BIRTH_DATE;
+      const diffDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+      
+      const weeks = Math.floor(diffDays / 7);
+      const remainingDays = diffDays % 7;
+
+      document.getElementById('catDaysAge').textContent = diffDays;
+      document.getElementById('catWeeksAge').textContent = `${weeks} tuần ${remainingDays} ngày`;
+
+      // Đếm ngày tới mốc 2 tháng
+      const diffUntil2M = Math.ceil((TWO_MONTHS_DATE - today) / (1000 * 60 * 60 * 24));
+      const countdownEl = document.getElementById('daysUntilTwoMonths');
+      if (diffUntil2M > 0) {
+        countdownEl.textContent = `Còn ${diffUntil2M} ngày nữa`;
+      } else if (diffUntil2M === 0) {
+        countdownEl.textContent = `Hôm nay tròn 2 tháng!`;
+        countdownEl.className = "text-[10px] text-amber-600 block font-bold";
+      } else {
+        countdownEl.textContent = `Đã qua mốc 2 tháng`;
+      }
+    }
+
+    // Modal Avatar Controls
+    function openAvatarModal() {
+      document.getElementById('avatarModal').classList.remove('hidden');
+      document.getElementById('avatarModal').classList.add('flex');
+    }
+    function closeAvatarModal() {
+      document.getElementById('avatarModal').classList.add('hidden');
+      document.getElementById('avatarModal').classList.remove('flex');
+    }
+    function saveAvatar(src) {
+      document.getElementById('catAvatar').src = src;
+      localStorage.setItem('cat_custom_avatar', src);
+      closeAvatarModal();
+    }
+    function setPresetAvatar(src) {
+      saveAvatar(src);
+    }
+    function applyUrlAvatar() {
+      const url = document.getElementById('avatarUrlInput').value.trim();
+      if (url) {
+        saveAvatar(url);
+        document.getElementById('avatarUrlInput').value = '';
+      }
+    }
+    function resetDefaultAvatar() {
+      saveAvatar(DEFAULT_AVATAR);
+    }
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // Nén ảnh qua Canvas để không đầy LocalStorage
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 320;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          saveAvatar(compressedDataUrl);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Tính liều Sanpet (1 viên / 4kg)
+    function calculateSanpetDose() {
+      const weight = parseFloat(document.getElementById('catWeightInput').value) || 0;
+      const resEl = document.getElementById('sanpetDoseResult');
+      if (weight <= 0) {
+        resEl.textContent = '0 viên';
+        return;
+      }
+      const ratio = weight / 4;
+      if (ratio <= 0.28) {
+        resEl.textContent = '1/4 viên';
+      } else if (ratio <= 0.55) {
+        resEl.textContent = '1/2 viên';
+      } else if (ratio <= 0.85) {
+        resEl.textContent = '3/4 viên';
+      } else {
+        resEl.textContent = `${ratio.toFixed(2)} viên`;
+      }
+    }
+
+    // Quản lý trạng thái Task (Timeline) bằng LocalStorage
+    function toggleTask(checkbox) {
+      const taskId = checkbox.getAttribute('task-id');
+      localStorage.setItem(`task_${taskId}`, checkbox.checked ? 'true' : 'false');
+    }
+    function loadSavedTasks() {
+      document.querySelectorAll('[task-id]').forEach(cb => {
+        const taskId = cb.getAttribute('task-id');
+        const isChecked = localStorage.getItem(`task_${taskId}`) === 'true';
+        cb.checked = isChecked;
+      });
+    }
+
+    // Quản lý Nhật ký sức khỏe
+    function saveHealthLog() {
+      const stool = document.getElementById('stoolStatus').value;
+      const eye = document.getElementById('eyeStatus').value;
+      const note = document.getElementById('logNote').value.trim();
+
+      const newLog = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' }),
+        stool: stool,
+        eye: eye,
+        note: note
+      };
+
+      const logs = JSON.parse(localStorage.getItem('cat_health_logs') || '[]');
+      logs.unshift(newLog);
+      localStorage.setItem('cat_health_logs', JSON.stringify(logs));
+
+      document.getElementById('logNote').value = '';
+      renderHealthLogs();
+    }
+
+    function renderHealthLogs() {
+      const logs = JSON.parse(localStorage.getItem('cat_health_logs') || '[]');
+      const container = document.getElementById('healthLogList');
+      if (logs.length === 0) {
+        container.innerHTML = '<div class="text-[11px] text-slate-400 text-center py-3 italic">Chưa có bản ghi nào. Hãy lưu tình trạng hôm nay của bé nhé!</div>';
+        return;
+      }
+
+      container.innerHTML = logs.slice(0, 5).map(log => `
+        <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-xl text-xs space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-[10px]">
+            <span><i class="fa-regular fa-clock mr-1"></i>${log.date}</span>
+          </div>
+          <div class="text-slate-700 font-medium">${log.stool} • ${log.eye}</div>
+          ${log.note ? `<div class="text-slate-500 text-[11px] italic bg-white p-1.5 rounded-lg border border-slate-100">"${log.note}"</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function clearHealthLogs() {
+      if (confirm('Bạn có muốn xóa toàn bộ lịch sử theo dõi sức khỏe không?')) {
+        localStorage.removeItem('cat_health_logs');
+        renderHealthLogs();
+      }
+    }
+
+    // Khởi tạo trang
+    window.addEventListener('DOMContentLoaded', () => {
+      // Load Avatar đã lưu
+      const savedAvatar = localStorage.getItem('cat_custom_avatar');
+      if (savedAvatar) {
+        document.getElementById('catAvatar').src = savedAvatar;
+      }
+      updateAgeMetrics();
+      calculateSanpetDose();
+      loadSavedTasks();
+      renderHealthLogs();
+    });
+  </script>
+</body>
+</html>
