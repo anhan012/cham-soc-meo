@@ -35,13 +35,16 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
     }
+    canvas#signatureCanvas {
+      touch-action: none;
+    }
   </style>
 </head>
 <body class="bg-amber-50/40 text-slate-800 min-h-screen pb-16">
 
   <!-- ================= TOP HEADER ================= -->
   <header class="bg-white/80 backdrop-blur-md border-b border-amber-100 sticky top-0 z-30 shadow-xs">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
       <div class="flex items-center space-x-3">
         <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm">
           <i class="fa-solid fa-cat"></i>
@@ -54,6 +57,10 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <button onclick="openScheduleModal()" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-amber-500 text-white hover:bg-amber-600 transition flex items-center gap-1.5 shadow-xs">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Cập nhật mốc ngày</span>
+        </button>
         <button onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1.5">
           <i class="fa-solid fa-print"></i>
           <span class="hidden sm:inline">In sổ tay</span>
@@ -64,7 +71,7 @@
 
   <main class="max-w-6xl mx-auto px-4 pt-6 space-y-6">
 
-    <!-- ================= THÔNG BÁO QUAN TRỌNG: ĐÃ XỔ GIUN 17/10 ================= -->
+    <!-- ================= THÔNG BÁO QUAN TRỌNG: XỔ GIUN & TỰ ĐỘNG ĐIỀU CHỈNH ================= -->
     <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div class="flex items-start gap-3">
         <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-xl shadow-xs">
@@ -72,17 +79,18 @@
         </div>
         <div>
           <div class="flex flex-wrap items-center gap-2">
-            <h2 class="text-base font-bold text-emerald-950 font-heading">ĐÃ XỔ GIUN THÀNH CÔNG NGÀY 17/10/2026</h2>
+            <h2 id="bannerDewormTitle" class="text-base font-bold text-emerald-950 font-heading">ĐÃ XỔ GIUN THÀNH CÔNG NGÀY 17/10/2026</h2>
             <span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md font-bold">1/4 viên Sanpet</span>
+            <button onclick="openScheduleModal()" class="text-[11px] underline text-emerald-800 hover:text-emerald-950 font-semibold">Sửa ngày</button>
           </div>
-          <p class="text-xs sm:text-sm text-emerald-800 mt-1 leading-relaxed">
+          <p id="bannerDewormDesc" class="text-xs sm:text-sm text-emerald-800 mt-1 leading-relaxed">
             Hôm nay bé <strong>KHÔNG CẦN</strong> uống lại thuốc xổ giun để tránh quá liều. Hiện tại chỉ cần giữ ấm, quan sát phân khuôn đẹp, theo dõi mắt/mũi để chuẩn bị tiêm vaccine Mũi 1 khi tròn 2 tháng tuổi!
           </p>
         </div>
       </div>
       <div class="shrink-0 w-full sm:w-auto bg-white/80 border border-emerald-200 rounded-xl px-4 py-2 text-center">
         <span class="text-[11px] uppercase tracking-wider text-emerald-700 font-bold block">Đợt xổ giun kế tiếp</span>
-        <span class="text-sm font-bold text-emerald-900 font-heading">17/11/2026 (tròn 1 tháng)</span>
+        <span id="nextDewormBadge" class="text-sm font-bold text-emerald-900 font-heading">17/11/2026 (tròn 1 tháng)</span>
       </div>
     </div>
 
@@ -92,7 +100,6 @@
         
         <!-- Cột Avatar & Thông tin cá nhân -->
         <div class="flex items-center gap-4">
-          <!-- Khung ảnh có nút đổi avatar -->
           <div class="relative group cursor-pointer" onclick="openAvatarModal()" title="Bấm để đổi ảnh đại diện cho bé">
             <img id="catAvatar" 
                  src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=400&q=80" 
@@ -102,12 +109,11 @@
               <i class="fa-solid fa-camera mb-1"></i>
               <span>Đổi ảnh</span>
             </div>
-            <button class="absolute -bottom-1 -right-1 w-7 h-7 bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center text-xs shadow-md border-2 border-white transition">
+            <button type="button" class="absolute -bottom-1 -right-1 w-7 h-7 bg-amber-500 hover:bg-amber-600 text-white rounded-full flex items-center justify-center text-xs shadow-md border-2 border-white transition">
               <i class="fa-solid fa-camera"></i>
             </button>
           </div>
 
-          <!-- Thông tin cơ bản -->
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <h2 class="text-xl sm:text-2xl font-bold text-slate-800 font-heading">Bé Xám</h2>
@@ -118,7 +124,7 @@
             <p class="text-xs text-slate-500 font-medium">Giống: Anh lông ngắn lai (ALN) • Màu lông: Xám tro</p>
             <div class="flex items-center gap-1.5 text-xs text-slate-600 pt-1">
               <i class="fa-regular fa-calendar-days text-amber-500"></i>
-              <span>Sinh ngày: <strong class="text-slate-800">29/08/2026</strong></span>
+              <span>Sinh ngày: <strong id="birthDateDisplay" class="text-slate-800">29/08/2026</strong></span>
             </div>
           </div>
         </div>
@@ -137,14 +143,14 @@
           </div>
           <div>
             <span class="text-[11px] text-slate-500 block font-medium">Mốc tròn 2 tháng</span>
-            <span class="text-base sm:text-lg font-bold text-teal-600 font-heading">29/10/2026</span>
+            <span id="twoMonthsDateDisplay" class="text-base sm:text-lg font-bold text-teal-600 font-heading">29/10/2026</span>
             <span id="daysUntilTwoMonths" class="text-[10px] text-teal-600 block font-medium">Còn 7 ngày</span>
           </div>
         </div>
 
       </div>
 
-      <!-- ================= NGUYÊN TẮC VÀNG VÀ CHUỖI QUY TRÌNH (ĐÃ SỬA LỖI MŨI TÊN) ================= -->
+      <!-- ================= NGUYÊN TẮC VÀNG VÀ CHUỖI QUY TRÌNH ================= -->
       <div class="mt-5 pt-4 border-t border-slate-100 bg-amber-50/70 rounded-2xl p-4 border border-amber-200/80">
         <div class="flex items-start gap-2.5">
           <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-base shrink-0"></i>
@@ -156,45 +162,35 @@
               Tuyệt đối <strong>KHÔNG</strong> tắm, xổ giun và tiêm phòng cùng một ngày hoặc quá sát nhau vì mèo con sức đề kháng còn non nớt, rất dễ bị sốc phản vệ, hạ thân nhiệt dẫn đến tử vong.
             </p>
 
-            <!-- Khung chuỗi quy trình dạng Badge + Mũi tên trực quan (Hoàn toàn không có LaTeX) -->
             <div class="mt-3 pt-3 border-t border-amber-200/60">
               <span class="text-[11px] font-bold text-amber-900 block mb-2 uppercase tracking-wider">Khoảng cách chuẩn bắt buộc:</span>
               <div class="flex flex-wrap items-center gap-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-bold shadow-2xs">
                   <i class="fa-solid fa-shower text-sky-500"></i> Tắm
                 </span>
-                
                 <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
-                
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-semibold shadow-2xs">
                   <i class="fa-regular fa-clock text-amber-600"></i> Nghỉ 2–3 ngày
                 </span>
-
                 <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
-
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-bold shadow-2xs">
                   <i class="fa-solid fa-capsules text-amber-600"></i> Xổ giun
                 </span>
-
                 <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
-
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 border border-amber-300 rounded-lg text-xs font-semibold shadow-2xs">
                   <i class="fa-solid fa-shield-virus text-indigo-500"></i> Cách ly 7 ngày
                 </span>
-
                 <i class="fa-solid fa-arrow-right text-amber-500 text-xs"></i>
-
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-xs">
                   <i class="fa-solid fa-syringe"></i> Tiêm ngừa
                 </span>
               </div>
             </div>
 
-            <!-- Ghi chú riêng cho bé Xám hiện tại -->
-            <div class="mt-3 p-2.5 bg-white/90 rounded-xl border border-amber-200 text-xs text-slate-700 flex items-start gap-2">
+            <div id="dynamicRuleNote" class="mt-3 p-2.5 bg-white/90 rounded-xl border border-amber-200 text-xs text-slate-700 flex items-start gap-2">
               <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
               <div>
-                <strong>Áp dụng cho Bé Xám đợt này:</strong> Vì bé <strong>đã xổ giun ngày 17/10</strong>, nên đến ngày <strong>29/10</strong> (đủ 2 tháng tuổi), bạn tắm cho bé vào buổi trưa ấm → cho nghỉ 2–3 ngày giữ ấm → không cần xổ giun lại gấp mà có thể đưa đi <strong>tiêm Mũi 1 ngay trong tuần đầu tháng 11</strong> nếu bé khỏe mạnh!
+                <strong>Áp dụng cho Bé Xám đợt này:</strong> Đang tự động đồng bộ theo mốc xổ giun và tiêm ngừa hiện tại.
               </div>
             </div>
 
@@ -210,104 +206,22 @@
       <!-- CỘT TRÁI (7 PHẦN): LỊCH TRÌNH Y TẾ & NHẬT KÝ -->
       <div class="lg:col-span-7 space-y-6">
 
-        <!-- CARD 1: TIMELINE LỊCH TRÌNH Y TẾ -->
+        <!-- CARD 1: TIMELINE LỊCH TRÌNH Y TẾ (TỰ ĐỘNG CẬP NHẬT NGÀY) -->
         <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
-          <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center justify-between gap-2 mb-4">
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <i class="fa-solid fa-calendar-check"></i>
               </div>
               <h3 class="text-base font-bold text-slate-800 font-heading">Lịch trình y tế & Các mốc quan trọng</h3>
             </div>
-            <span class="text-xs text-slate-400">Tự động lưu vào máy</span>
+            <button onclick="openScheduleModal()" class="text-xs font-semibold text-indigo-600 hover:underline">
+              Đổi ngày mốc
+            </button>
           </div>
 
           <div class="space-y-3" id="timelineContainer">
-
-            <!-- Item 1: Đã xổ giun -->
-            <div class="p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/50 flex items-start gap-3">
-              <input type="checkbox" checked disabled class="mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-emerald-900 line-through">17/10/2026: Xổ giun đợt 1</span>
-                  <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-bold">Đã hoàn thành</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">Uống 1/4 viên Sanpet màu vàng. Bé đã qua ngày theo dõi phân an toàn.</p>
-              </div>
-            </div>
-
-            <!-- Item 2: Mốc 2 tháng tuổi -->
-            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-300 transition flex items-start gap-3">
-              <input type="checkbox" id task-id="task_2months" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-800">29/10/2026: Đủ 2 tháng tuổi - Tắm lần đầu</span>
-                  <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-semibold">Mốc quan trọng</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">Chỉ tắm vào <strong>buổi trưa có nắng ấm</strong>, phòng kín gió. Tắm nhanh và <strong>sấy khô kiệt chân lông</strong> lập tức.</p>
-              </div>
-            </div>
-
-            <!-- Item 3: Tiêm phòng mũi 1 -->
-            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 transition flex items-start gap-3">
-              <input type="checkbox" id task-id="task_vaccine1" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-800">01/11 - 05/11/2026: Tiêm ngừa Mũi 1 (4 bệnh)</span>
-                  <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-semibold">Vaccine</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">Cách xa đợt tắm 2-3 ngày và đợt xổ giun > 10 ngày. Chỉ đưa đi tiêm khi bé <strong>khỏe mạnh 100%</strong>, mắt sáng, không hắt xì sổ mũi.</p>
-              </div>
-            </div>
-
-            <!-- Item 4: Tập ăn dặm -->
-            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-teal-300 transition flex items-start gap-3">
-              <input type="checkbox" id task-id="task_food" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-teal-600 focus:ring-teal-500 cursor-pointer">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-800">10/11 - 12/11/2026: Tập ăn dặm (Pate/Hạt)</span>
-                  <span class="text-[10px] bg-teal-100 text-teal-800 px-2 py-0.5 rounded-full font-semibold">Dinh dưỡng</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">Cách mũi tiêm 1 tuần mới bắt đầu tập ăn. Chét một chút súp thưởng/pate lên ngón tay đút mép miệng để bé tự liếm.</p>
-              </div>
-            </div>
-
-            <!-- Item 5: Xổ giun đợt 2 -->
-            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-300 transition flex items-start gap-3">
-              <input type="checkbox" id task-id="task_deworm2" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-800">17/11/2026: Xổ giun định kỳ đợt 2</span>
-                  <span class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-semibold">Định kỳ</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">Tròn 1 tháng kể từ ngày 17/10. Cân lại bé để chia liều Sanpet (1 viên cho 4kg thể trọng).</p>
-              </div>
-            </div>
-
-            <!-- Item 6: Tiêm Mũi 2 + Dại -->
-            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 transition flex items-start gap-3">
-              <input type="checkbox" id task-id="task_vaccine2" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-800">15/12 - 30/12/2026: Tiêm Mũi 2 + Mũi Dại</span>
-                  <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-semibold">Cách Mũi 1 từ 6-8 tuần</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">Tiêm vaccine 4 bệnh mũi 2 kèm mũi phòng bệnh Dại đầu tiên.</p>
-              </div>
-            </div>
-
-            <!-- Item 7: Tiêm Mũi 3 -->
-            <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 transition flex items-start gap-3">
-              <input type="checkbox" id task-id="task_vaccine3" onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-800">Tháng 02/2027: Tiêm Mũi 3 (Mũi hoàn tất năm 1)</span>
-                  <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full font-semibold">Trước 1 tuổi</span>
-                </div>
-                <p class="text-xs text-slate-600 mt-0.5">Cách Mũi 2 từ 6-8 tuần. Hoàn thành 3 mũi 4 bệnh + dại trước 1 tuổi. Sau đó mỗi năm chỉ chích nhắc 1 lần.</p>
-              </div>
-            </div>
-
+            <!-- Tự động render theo mốc ngày đã cấu hình -->
           </div>
         </div>
 
@@ -323,7 +237,6 @@
             <button onclick="clearHealthLogs()" class="text-xs text-slate-400 hover:text-red-500 transition">Xóa lịch sử</button>
           </div>
 
-          <!-- Form ghi nhận nhanh -->
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-3">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -351,10 +264,54 @@
             </button>
           </div>
 
-          <!-- Danh sách log đã lưu -->
-          <div class="mt-4 space-y-2 max-h-48 overflow-y-auto pr-1" id="healthLogList">
-            <!-- Tự động sinh bởi JS -->
+          <div class="mt-4 space-y-2 max-h-48 overflow-y-auto pr-1" id="healthLogList"></div>
+        </div>
+
+        <!-- CARD 5: CHỖ KÝ / XÁC NHẬN -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                <i class="fa-solid fa-signature"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-800 font-heading">Chỗ ký & Xác nhận sổ tay</h3>
+                <p class="text-[11px] text-slate-400">Ký xác nhận lịch xổ giun, tiêm phòng hoặc bàn giao</p>
+              </div>
+            </div>
+            <button onclick="clearAllSignatures()" class="text-xs text-slate-400 hover:text-red-500 transition">Xóa tất cả</button>
           </div>
+
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Người ký / Vai trò:</label>
+                <input type="text" id="signerName" placeholder="VD: Chủ nuôi / BS. Thú y..." class="w-full text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-violet-500">
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Nội dung xác nhận:</label>
+                <input type="text" id="signReason" placeholder="VD: Xác nhận xổ giun / Tiêm mũi 1..." class="w-full text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-violet-500">
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-semibold text-slate-700">Khung ký tay:</label>
+                <button type="button" onclick="clearCanvasSignature()" class="text-[11px] font-semibold text-rose-600 hover:underline flex items-center gap-1">
+                  <i class="fa-solid fa-eraser"></i> Xóa nét ký
+                </button>
+              </div>
+              <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl overflow-hidden">
+                <canvas id="signatureCanvas" width="520" height="140" class="w-full h-36 block cursor-crosshair"></canvas>
+              </div>
+            </div>
+
+            <button type="button" onclick="saveSignatureRecord()" class="w-full py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-xs">
+              <i class="fa-solid fa-check-double"></i> Lưu chữ ký xác nhận
+            </button>
+          </div>
+
+          <div id="signatureList" class="mt-4 space-y-2.5"></div>
         </div>
 
       </div>
@@ -371,7 +328,6 @@
             <h3 class="text-base font-bold text-slate-800 font-heading">Tủ thuốc & Công cụ tính liều</h3>
           </div>
 
-          <!-- Công cụ tính liều Sanpet -->
           <div class="bg-amber-500/10 border border-amber-300/80 rounded-2xl p-4">
             <div class="flex items-center justify-between mb-2">
               <span class="text-xs font-bold text-amber-950 uppercase">Viên vàng Sanpet (Xổ giun)</span>
@@ -391,7 +347,6 @@
             <p class="text-[11px] text-amber-800 mt-2 italic">* Bé 9 lạng (0.9kg) uống chuẩn 1/4 viên. Đợt tới cân lại bé trước khi cho uống.</p>
           </div>
 
-          <!-- Chi tiết các thuốc khác -->
           <div class="mt-4 space-y-3">
             <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
               <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
@@ -400,7 +355,6 @@
               <p class="text-xs text-slate-600 mt-1">Đặc trị tiêu chảy, ói mửa, viêm phổi hoặc khi bị giun nặng dẫn đến rối loạn tiêu hóa.</p>
             </div>
 
-            <!-- PHÁC ĐỒ CẢM / ĐAU MẮT -->
             <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-2xl space-y-2">
               <div class="flex items-center gap-1.5 text-rose-900 font-bold text-xs">
                 <i class="fa-solid fa-kit-medical text-rose-600"></i>
@@ -430,7 +384,6 @@
           </div>
 
           <div class="space-y-3">
-            <!-- Hạt khuyên dùng -->
             <div>
               <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5 mb-1.5">
                 <i class="fa-solid fa-circle-check text-emerald-500"></i> Hạt khô dòng KITTEN (an toàn cho hệ tiêu hóa):
@@ -444,7 +397,6 @@
               </div>
             </div>
 
-            <!-- Hạt cấm -->
             <div class="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-900">
               <span class="font-bold flex items-center gap-1">
                 <i class="fa-solid fa-ban text-red-600"></i> TUYỆT ĐỐI TRÁNH:
@@ -454,7 +406,6 @@
               </p>
             </div>
 
-            <!-- Công thức Pate chuẩn & Cấm gan -->
             <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-xl text-xs space-y-1.5">
               <span class="font-bold text-amber-950 flex items-center gap-1">
                 <i class="fa-solid fa-utensils text-amber-600"></i> Công thức pate tươi an toàn:
@@ -466,7 +417,6 @@
                 ⚠️ <strong>CẤM NẤU GAN (gà/heo):</strong> Gan giữ vi khuẩn và ấu trùng giun rất dai dẳng, luộc kỹ vẫn khó sạch, mèo ăn vào rất dễ tái nhiễm giun sán!
               </div>
             </div>
-
           </div>
         </div>
 
@@ -476,9 +426,60 @@
 
   </main>
 
+  <!-- ================= MODAL CẬP NHẬT MỐC NGÀY XỔ GIUN / TIÊM NGỪA ================= -->
+  <div id="scheduleModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-800 font-heading flex items-center gap-2">
+          <i class="fa-solid fa-calendar-pen text-amber-500"></i> Cập nhật mốc xổ giun & tiêm ngừa
+        </h3>
+        <button onclick="closeScheduleModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-sm transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500">
+        Khi bạn đổi <strong>Ngày xổ giun</strong> hoặc <strong>Ngày tiêm ngừa Mũi 1</strong>, các mốc kế tiếp (xổ giun lần sau, ăn dặm, mũi 2 + dại, mũi 3) sẽ tự tính lại theo đúng khoảng cách chuẩn.
+      </p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Ngày sinh của bé:</label>
+          <input type="date" id="inputBirthDate" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Ngày xổ giun gần nhất:</label>
+          <input type="date" id="inputDewormDate" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Ngày tiêm ngừa Mũi 1:</label>
+          <input type="date" id="inputVaccine1Date" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Chu kỳ xổ giun (ngày):</label>
+            <input type="number" min="15" max="180" id="inputDewormCycle" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Cách mũi tiêm sau (tuần):</label>
+            <input type="number" min="3" max="12" id="inputVaccineGapWeeks" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-slate-100 pt-4 gap-2">
+        <button type="button" onclick="resetDefaultSchedule()" class="text-xs text-rose-500 hover:underline font-semibold">Mặc định</button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeScheduleModal()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Hủy</button>
+          <button type="button" onclick="saveScheduleConfig()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl shadow-xs">Lưu & Tự tính lại</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= MODAL ĐỔI ẢNH ĐẠI DIỆN ================= -->
   <div id="avatarModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-150">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 class="text-base font-bold text-slate-800 font-heading flex items-center gap-2">
           <i class="fa-solid fa-camera text-amber-500"></i> Đổi ảnh đại diện cho Bé Xám
@@ -488,13 +489,11 @@
         </button>
       </div>
 
-      <!-- Tải từ thiết bị -->
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1.5">1. Tải ảnh từ điện thoại / máy tính:</label>
         <input type="file" id="avatarFileInput" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
       </div>
 
-      <!-- Dán link ảnh -->
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1.5">2. Hoặc dán đường dẫn (URL) ảnh:</label>
         <div class="flex gap-2">
@@ -503,7 +502,6 @@
         </div>
       </div>
 
-      <!-- Preset mèo xám dễ thương -->
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1.5">3. Hoặc chọn mẫu mèo con xám có sẵn:</label>
         <div class="grid grid-cols-5 gap-2">
@@ -525,35 +523,235 @@
   <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
     const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=400&q=80";
-    const BIRTH_DATE = new Date(2026, 7, 29); // 29/08/2026 (Month index 7 là tháng 8)
-    const TWO_MONTHS_DATE = new Date(2026, 9, 29); // 29/10/2026
+    const DEFAULT_SCHEDULE = {
+      birthDate: "2026-08-29",
+      lastDewormDate: "2026-10-17",
+      vaccine1Date: "2026-11-03",
+      dewormCycleDays: 30,
+      vaccineGapWeeks: 6
+    };
 
-    // Tính toán số ngày tuổi và ngày đến mốc 2 tháng
-    function updateAgeMetrics() {
-      const today = new Date(); // Thời gian thực
-      const diffTime = today - BIRTH_DATE;
-      const diffDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
-      
+    function getScheduleConfig() {
+      const saved = JSON.parse(localStorage.getItem('cat_schedule_config') || 'null');
+      return { ...DEFAULT_SCHEDULE, ...(saved || {}) };
+    }
+
+    function parseLocalDate(isoStr) {
+      const [y, m, d] = (isoStr || "").split('-').map(Number);
+      if (!y || !m || !d) return new Date();
+      return new Date(y, m - 1, d);
+    }
+
+    function toInputDateValue(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function addDays(dateObj, days) {
+      const copy = new Date(dateObj.getTime());
+      copy.setDate(copy.getDate() + days);
+      return copy;
+    }
+
+    function formatVNDate(dateObj) {
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const y = dateObj.getFullYear();
+      return `${d}/${m}/${y}`;
+    }
+
+    function formatShortVN(dateObj) {
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      return `${d}/${m}`;
+    }
+
+    function openScheduleModal() {
+      const cfg = getScheduleConfig();
+      document.getElementById('inputBirthDate').value = cfg.birthDate;
+      document.getElementById('inputDewormDate').value = cfg.lastDewormDate;
+      document.getElementById('inputVaccine1Date').value = cfg.vaccine1Date;
+      document.getElementById('inputDewormCycle').value = cfg.dewormCycleDays;
+      document.getElementById('inputVaccineGapWeeks').value = cfg.vaccineGapWeeks;
+
+      const modal = document.getElementById('scheduleModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeScheduleModal() {
+      const modal = document.getElementById('scheduleModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function saveScheduleConfig() {
+      const cfg = {
+        birthDate: document.getElementById('inputBirthDate').value || DEFAULT_SCHEDULE.birthDate,
+        lastDewormDate: document.getElementById('inputDewormDate').value || DEFAULT_SCHEDULE.lastDewormDate,
+        vaccine1Date: document.getElementById('inputVaccine1Date').value || DEFAULT_SCHEDULE.vaccine1Date,
+        dewormCycleDays: Math.max(15, parseInt(document.getElementById('inputDewormCycle').value, 10) || 30),
+        vaccineGapWeeks: Math.max(3, parseInt(document.getElementById('inputVaccineGapWeeks').value, 10) || 6)
+      };
+      localStorage.setItem('cat_schedule_config', JSON.stringify(cfg));
+      closeScheduleModal();
+      syncAllSchedules();
+    }
+
+    function resetDefaultSchedule() {
+      localStorage.removeItem('cat_schedule_config');
+      closeScheduleModal();
+      syncAllSchedules();
+    }
+
+    function syncAllSchedules() {
+      const cfg = getScheduleConfig();
+      const birthDate = parseLocalDate(cfg.birthDate);
+      const twoMonthsDate = addDays(birthDate, 61);
+      const bathDate = twoMonthsDate;
+
+      const lastDeworm = parseLocalDate(cfg.lastDewormDate);
+      const safeAfterDeworm = addDays(lastDeworm, 7);
+      const nextDeworm = addDays(lastDeworm, cfg.dewormCycleDays);
+
+      const vac1 = parseLocalDate(cfg.vaccine1Date);
+      const vac1Start = addDays(vac1, -2);
+      const vac1End = addDays(vac1, 2);
+
+      const foodStart = addDays(vac1, 7);
+      const foodEnd = addDays(vac1, 9);
+
+      const vac2 = addDays(vac1, cfg.vaccineGapWeeks * 7);
+      const vac2End = addDays(vac2, 14);
+
+      const vac3 = addDays(vac2, cfg.vaccineGapWeeks * 7);
+      const vac3End = addDays(vac3, 14);
+
+      // Cập nhật thẻ thông tin & tuổi
+      document.getElementById('birthDateDisplay').textContent = formatVNDate(birthDate);
+      document.getElementById('twoMonthsDateDisplay').textContent = formatVNDate(twoMonthsDate);
+
+      const today = new Date();
+      const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const birthMidnight = new Date(birthDate.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+      const twoMMidnight = new Date(twoMonthsDate.getFullYear(), twoMonthsDate.getMonth(), twoMonthsDate.getDate());
+
+      const diffDays = Math.max(0, Math.floor((todayMidnight - birthMidnight) / (1000 * 60 * 60 * 24)));
       const weeks = Math.floor(diffDays / 7);
       const remainingDays = diffDays % 7;
-
       document.getElementById('catDaysAge').textContent = diffDays;
       document.getElementById('catWeeksAge').textContent = `${weeks} tuần ${remainingDays} ngày`;
 
-      // Đếm ngày tới mốc 2 tháng
-      const diffUntil2M = Math.ceil((TWO_MONTHS_DATE - today) / (1000 * 60 * 60 * 24));
+      const diffUntil2M = Math.ceil((twoMMidnight - todayMidnight) / (1000 * 60 * 60 * 24));
       const countdownEl = document.getElementById('daysUntilTwoMonths');
       if (diffUntil2M > 0) {
         countdownEl.textContent = `Còn ${diffUntil2M} ngày nữa`;
+        countdownEl.className = "text-[10px] text-teal-600 block font-medium";
       } else if (diffUntil2M === 0) {
         countdownEl.textContent = `Hôm nay tròn 2 tháng!`;
         countdownEl.className = "text-[10px] text-amber-600 block font-bold";
       } else {
         countdownEl.textContent = `Đã qua mốc 2 tháng`;
+        countdownEl.className = "text-[10px] text-slate-400 block font-medium";
       }
+
+      // Cập nhật Banner xổ giun
+      document.getElementById('bannerDewormTitle').textContent = `ĐÃ XỔ GIUN THÀNH CÔNG NGÀY ${formatVNDate(lastDeworm)}`;
+      document.getElementById('nextDewormBadge').textContent = `${formatVNDate(nextDeworm)} (+${cfg.dewormCycleDays} ngày)`;
+      document.getElementById('bannerDewormDesc').innerHTML =
+        `Mốc xổ giun gần nhất là <strong>${formatVNDate(lastDeworm)}</strong> (hết cách ly 7 ngày vào <strong>${formatVNDate(safeAfterDeworm)}</strong>). Mũi tiêm 1 dự kiến vào <strong>${formatVNDate(vac1)}</strong>, đợt xổ giun kế tiếp vào <strong>${formatVNDate(nextDeworm)}</strong>.`;
+
+      // Cập nhật ghi chú quy tắc
+      document.getElementById('dynamicRuleNote').innerHTML = `
+        <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+        <div>
+          <strong>Lịch tự động hiện tại:</strong> Xổ giun ngày <strong>${formatVNDate(lastDeworm)}</strong> → Tắm/mốc 2 tháng <strong>${formatVNDate(bathDate)}</strong> → Tiêm Mũi 1 dự kiến <strong>${formatVNDate(vac1)}</strong> → Tập ăn dặm từ <strong>${formatVNDate(foodStart)}</strong> → Xổ giun kế tiếp <strong>${formatVNDate(nextDeworm)}</strong> → Mũi 2 + Dại từ <strong>${formatVNDate(vac2)}</strong>.
+        </div>
+      `;
+
+      // Render Timeline
+      const items = [
+        {
+          id: 'task_deworm1',
+          dateLabel: formatVNDate(lastDeworm),
+          title: `Xổ giun đợt gần nhất (${formatVNDate(lastDeworm)})`,
+          badge: 'Đã ghi nhận',
+          badgeClass: 'bg-emerald-200 text-emerald-900',
+          desc: `Đã uống thuốc xổ giun ngày ${formatVNDate(lastDeworm)}. Đủ 7 ngày theo dõi/cách ly vào ${formatVNDate(safeAfterDeworm)}.`,
+          checkedByDefault: true
+        },
+        {
+          id: 'task_2months',
+          dateLabel: formatVNDate(bathDate),
+          title: `${formatVNDate(bathDate)}: Mốc ~2 tháng tuổi - Tắm lần đầu`,
+          badge: 'Mốc quan trọng',
+          badgeClass: 'bg-amber-100 text-amber-800',
+          desc: 'Chỉ tắm vào buổi trưa có nắng ấm, phòng kín gió. Tắm nhanh và sấy khô kiệt chân lông lập tức.'
+        },
+        {
+          id: 'task_vaccine1',
+          dateLabel: `${formatShortVN(vac1Start)} - ${formatShortVN(vac1End)}/${vac1.getFullYear()}`,
+          title: `${formatShortVN(vac1Start)} - ${formatShortVN(vac1End)}/${vac1.getFullYear()}: Tiêm ngừa Mũi 1 (4 bệnh)`,
+          badge: 'Vaccine',
+          badgeClass: 'bg-indigo-100 text-indigo-800',
+          desc: `Mốc chuẩn ${formatVNDate(vac1)}. Cách đợt tắm 2-3 ngày và đợt xổ giun ${formatVNDate(lastDeworm)}. Chỉ đưa đi tiêm khi bé khỏe mạnh 100%.`
+        },
+        {
+          id: 'task_food',
+          dateLabel: `${formatShortVN(foodStart)} - ${formatShortVN(foodEnd)}/${foodStart.getFullYear()}`,
+          title: `${formatShortVN(foodStart)} - ${formatShortVN(foodEnd)}/${foodStart.getFullYear()}: Tập ăn dặm (Pate/Hạt)`,
+          badge: 'Dinh dưỡng',
+          badgeClass: 'bg-teal-100 text-teal-800',
+          desc: `Tự động tính sau Mũi 1 (${formatVNDate(vac1)}) 7 ngày. Chét một chút súp thưởng/pate lên ngón tay đút mép miệng để bé tự liếm.`
+        },
+        {
+          id: 'task_deworm2',
+          dateLabel: formatVNDate(nextDeworm),
+          title: `${formatVNDate(nextDeworm)}: Xổ giun định kỳ kế tiếp`,
+          badge: `Sau ${cfg.dewormCycleDays} ngày`,
+          badgeClass: 'bg-slate-100 text-slate-700',
+          desc: `Tự động tính từ ${formatVNDate(lastDeworm)} (+${cfg.dewormCycleDays} ngày). Cân lại bé để chia liều Sanpet (1 viên cho 4kg thể trọng).`
+        },
+        {
+          id: 'task_vaccine2',
+          dateLabel: `${formatShortVN(vac2)} - ${formatShortVN(vac2End)}/${vac2.getFullYear()}`,
+          title: `${formatShortVN(vac2)} - ${formatShortVN(vac2End)}/${vac2.getFullYear()}: Tiêm Mũi 2 + Mũi Dại`,
+          badge: `Cách Mũi 1 ${cfg.vaccineGapWeeks} tuần`,
+          badgeClass: 'bg-indigo-100 text-indigo-800',
+          desc: `Tự động tính cách Mũi 1 (${formatVNDate(vac1)}) ${cfg.vaccineGapWeeks} tuần. Tiêm vaccine 4 bệnh mũi 2 kèm mũi phòng bệnh Dại đầu tiên.`
+        },
+        {
+          id: 'task_vaccine3',
+          dateLabel: `${formatShortVN(vac3)} - ${formatShortVN(vac3End)}/${vac3.getFullYear()}`,
+          title: `${formatShortVN(vac3)} - ${formatShortVN(vac3End)}/${vac3.getFullYear()}: Tiêm Mũi 3 (Mũi hoàn tất năm 1)`,
+          badge: `Cách Mũi 2 ${cfg.vaccineGapWeeks} tuần`,
+          badgeClass: 'bg-indigo-100 text-indigo-800',
+          desc: `Tự động tính cách Mũi 2 (${formatVNDate(vac2)}) ${cfg.vaccineGapWeeks} tuần. Hoàn thành 3 mũi 4 bệnh + dại trước 1 tuổi.`
+        }
+      ];
+
+      const container = document.getElementById('timelineContainer');
+      container.innerHTML = items.map(item => {
+        const savedVal = localStorage.getItem(`task_${item.id}`);
+        const isChecked = savedVal !== null ? savedVal === 'true' : !!item.checkedByDefault;
+        return `
+          <div class="p-3.5 rounded-2xl border ${isChecked ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200 bg-white hover:border-amber-300'} transition flex items-start gap-3">
+            <input type="checkbox" task-id="${item.id}" ${isChecked ? 'checked' : ''} onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
+            <div class="flex-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-xs font-bold ${isChecked ? 'text-emerald-900 line-through' : 'text-slate-800'}">${item.title}</span>
+                <span class="text-[10px] ${item.badgeClass} px-2 py-0.5 rounded-full font-semibold">${item.badge}</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-0.5">${item.desc}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // Modal Avatar Controls
+    // Avatar Modal Controls
     function openAvatarModal() {
       document.getElementById('avatarModal').classList.remove('hidden');
       document.getElementById('avatarModal').classList.add('flex');
@@ -586,7 +784,6 @@
 
       const reader = new FileReader();
       reader.onload = function(e) {
-        // Nén ảnh qua Canvas để không đầy LocalStorage
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
@@ -642,13 +839,7 @@
     function toggleTask(checkbox) {
       const taskId = checkbox.getAttribute('task-id');
       localStorage.setItem(`task_${taskId}`, checkbox.checked ? 'true' : 'false');
-    }
-    function loadSavedTasks() {
-      document.querySelectorAll('[task-id]').forEach(cb => {
-        const taskId = cb.getAttribute('task-id');
-        const isChecked = localStorage.getItem(`task_${taskId}`) === 'true';
-        cb.checked = isChecked;
-      });
+      syncAllSchedules();
     }
 
     // Quản lý Nhật ký sức khỏe
@@ -699,17 +890,145 @@
       }
     }
 
+    // ================= CHỨC NĂNG CHỖ KÝ (SIGNATURE PAD) =================
+    let sigCanvas, sigCtx, isDrawing = false, hasDrawnSignature = false;
+
+    function initSignaturePad() {
+      sigCanvas = document.getElementById('signatureCanvas');
+      if (!sigCanvas) return;
+      sigCtx = sigCanvas.getContext('2d');
+      sigCtx.lineWidth = 2.5;
+      sigCtx.lineCap = 'round';
+      sigCtx.lineJoin = 'round';
+      sigCtx.strokeStyle = '#1e293b';
+
+      function getCoords(e) {
+        const rect = sigCanvas.getBoundingClientRect();
+        const scaleX = sigCanvas.width / rect.width;
+        const scaleY = sigCanvas.height / rect.height;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: (clientX - rect.left) * scaleX,
+          y: (clientY - rect.top) * scaleY
+        };
+      }
+
+      function startDraw(e) {
+        e.preventDefault();
+        isDrawing = true;
+        const pos = getCoords(e);
+        sigCtx.beginPath();
+        sigCtx.moveTo(pos.x, pos.y);
+      }
+
+      function draw(e) {
+        if (!isDrawing) return;
+        e.preventDefault();
+        const pos = getCoords(e);
+        sigCtx.lineTo(pos.x, pos.y);
+        sigCtx.stroke();
+        hasDrawnSignature = true;
+      }
+
+      function stopDraw(e) {
+        if (!isDrawing) return;
+        e.preventDefault();
+        isDrawing = false;
+        sigCtx.closePath();
+      }
+
+      sigCanvas.addEventListener('mousedown', startDraw);
+      sigCanvas.addEventListener('mousemove', draw);
+      window.addEventListener('mouseup', stopDraw);
+
+      sigCanvas.addEventListener('touchstart', startDraw, { passive: false });
+      sigCanvas.addEventListener('touchmove', draw, { passive: false });
+      window.addEventListener('touchend', stopDraw);
+    }
+
+    function clearCanvasSignature() {
+      if (!sigCtx || !sigCanvas) return;
+      sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+      hasDrawnSignature = false;
+    }
+
+    function saveSignatureRecord() {
+      if (!hasDrawnSignature) {
+        alert('Vui lòng ký vào khung trước khi lưu.');
+        return;
+      }
+      const signer = document.getElementById('signerName').value.trim() || 'Người xác nhận';
+      const reason = document.getElementById('signReason').value.trim() || 'Xác nhận sổ tay chăm sóc';
+      const dataUrl = sigCanvas.toDataURL('image/png');
+
+      const records = JSON.parse(localStorage.getItem('cat_signatures') || '[]');
+      records.unshift({
+        id: Date.now(),
+        signer,
+        reason,
+        image: dataUrl,
+        time: new Date().toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' })
+      });
+      localStorage.setItem('cat_signatures', JSON.stringify(records));
+
+      document.getElementById('signerName').value = '';
+      document.getElementById('signReason').value = '';
+      clearCanvasSignature();
+      renderSignatures();
+    }
+
+    function deleteSignatureRecord(id) {
+      const records = JSON.parse(localStorage.getItem('cat_signatures') || '[]').filter(r => r.id !== id);
+      localStorage.setItem('cat_signatures', JSON.stringify(records));
+      renderSignatures();
+    }
+
+    function clearAllSignatures() {
+      if (confirm('Bạn có muốn xóa tất cả chữ ký đã lưu không?')) {
+        localStorage.removeItem('cat_signatures');
+        renderSignatures();
+      }
+    }
+
+    function renderSignatures() {
+      const records = JSON.parse(localStorage.getItem('cat_signatures') || '[]');
+      const container = document.getElementById('signatureList');
+      if (!container) return;
+
+      if (records.length === 0) {
+        container.innerHTML = '<div class="text-[11px] text-slate-400 text-center py-2 italic">Chưa có chữ ký nào được lưu.</div>';
+        return;
+      }
+
+      container.innerHTML = records.map(rec => `
+        <div class="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-slate-800 truncate">${rec.signer}</div>
+            <div class="text-[11px] text-slate-600 truncate">${rec.reason}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">${rec.time}</div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <img src="${rec.image}" alt="Chữ ký" class="h-12 w-28 object-contain bg-white border border-slate-200 rounded-xl px-2 py-1">
+            <button onclick="deleteSignatureRecord(${rec.id})" title="Xóa chữ ký" class="w-7 h-7 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition flex items-center justify-center text-xs">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
     // Khởi tạo trang
     window.addEventListener('DOMContentLoaded', () => {
-      // Load Avatar đã lưu
       const savedAvatar = localStorage.getItem('cat_custom_avatar');
       if (savedAvatar) {
         document.getElementById('catAvatar').src = savedAvatar;
       }
-      updateAgeMetrics();
+      syncAllSchedules();
       calculateSanpetDose();
-      loadSavedTasks();
       renderHealthLogs();
+      initSignaturePad();
+      renderSignatures();
     });
   </script>
 </body>
