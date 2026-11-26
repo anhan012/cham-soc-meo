@@ -84,13 +84,13 @@
             <button onclick="openScheduleModal()" class="text-[11px] underline text-emerald-800 hover:text-emerald-950 font-semibold">Sửa ngày</button>
           </div>
           <p id="bannerDewormDesc" class="text-xs sm:text-sm text-emerald-800 mt-1 leading-relaxed">
-            Hôm nay bé <strong>KHÔNG CẦN</strong> uống lại thuốc xổ giun để tránh quá liều. Hiện tại chỉ cần giữ ấm, quan sát phân khuôn đẹp, theo dõi mắt/mũi để chuẩn bị tiêm vaccine Mũi 1 khi tròn 2 tháng tuổi!
+            Mốc xổ giun gần nhất là 17/10/2026. Hiện tại chỉ cần giữ ấm, quan sát phân khuôn đẹp, theo dõi mắt/mũi để chuẩn bị tiêm vaccine Mũi 1.
           </p>
         </div>
       </div>
       <div class="shrink-0 w-full sm:w-auto bg-white/80 border border-emerald-200 rounded-xl px-4 py-2 text-center">
         <span class="text-[11px] uppercase tracking-wider text-emerald-700 font-bold block">Đợt xổ giun kế tiếp</span>
-        <span id="nextDewormBadge" class="text-sm font-bold text-emerald-900 font-heading">17/11/2026 (tròn 1 tháng)</span>
+        <span id="nextDewormBadge" class="text-sm font-bold text-emerald-900 font-heading">16/11/2026</span>
       </div>
     </div>
 
@@ -137,9 +137,12 @@
             <span id="catWeeksAge" class="text-[10px] text-slate-400 block font-medium">7 tuần 5 ngày</span>
           </div>
           <div class="border-x border-slate-200 px-2 sm:px-4">
-            <span class="text-[11px] text-slate-500 block font-medium">Cân nặng</span>
-            <span class="text-xl sm:text-2xl font-bold text-slate-800 font-heading">0.9 <span class="text-xs font-normal">kg</span></span>
-            <span class="text-[10px] text-slate-400 block font-medium">~ 9 lạng</span>
+            <span class="text-[11px] text-slate-500 block font-medium">Cân nặng (sửa nhanh)</span>
+            <div class="flex items-baseline justify-center gap-1 mt-0.5">
+              <input type="number" step="0.05" min="0.1" max="15" id="profileWeightInput" value="0.9" oninput="updateWeightEverywhere(this.value)" title="Nhập cân nặng trực tiếp để cập nhật" class="w-16 text-center text-lg sm:text-xl font-bold text-slate-800 font-heading bg-white border border-slate-200 focus:border-amber-500 rounded-lg px-1 py-0.5 outline-none">
+              <span class="text-xs font-semibold text-slate-600">kg</span>
+            </div>
+            <span id="weightLangNote" class="text-[10px] text-slate-400 block font-medium mt-0.5">~ 9 lạng</span>
           </div>
           <div>
             <span class="text-[11px] text-slate-500 block font-medium">Mốc tròn 2 tháng</span>
@@ -206,17 +209,20 @@
       <!-- CỘT TRÁI (7 PHẦN): LỊCH TRÌNH Y TẾ & NHẬT KÝ -->
       <div class="lg:col-span-7 space-y-6">
 
-        <!-- CARD 1: TIMELINE LỊCH TRÌNH Y TẾ (TỰ ĐỘNG CẬP NHẬT NGÀY) -->
+        <!-- CARD 1: TIMELINE LỊCH TRÌNH Y TẾ -->
         <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100">
-          <div class="flex items-center justify-between gap-2 mb-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <i class="fa-solid fa-calendar-check"></i>
               </div>
-              <h3 class="text-base font-bold text-slate-800 font-heading">Lịch trình y tế & Các mốc quan trọng</h3>
+              <div>
+                <h3 class="text-base font-bold text-slate-800 font-heading">Lịch trình y tế & Các mốc quan trọng</h3>
+                <p class="text-[11px] text-slate-400">Có thể đổi ngày trực tiếp trên từng mốc hoặc bấm nút "Tự tính lại sau mốc này"</p>
+              </div>
             </div>
             <button onclick="openScheduleModal()" class="text-xs font-semibold text-indigo-600 hover:underline">
-              Đổi ngày mốc
+              Cài đặt chu kỳ
             </button>
           </div>
 
@@ -336,7 +342,7 @@
             <p class="text-xs text-amber-900 mb-3">Nhập cân nặng hiện tại để tự động tính phần viên cần uống:</p>
             <div class="flex items-center gap-3">
               <div class="relative flex-1">
-                <input type="number" step="0.1" id="catWeightInput" value="0.9" oninput="calculateSanpetDose()" class="w-full bg-white text-slate-800 font-bold text-sm border border-amber-300 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400">
+                <input type="number" step="0.05" min="0.1" max="15" id="catWeightInput" value="0.9" oninput="updateWeightEverywhere(this.value)" class="w-full bg-white text-slate-800 font-bold text-sm border border-amber-300 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-amber-400">
                 <span class="absolute right-3 top-2 text-xs font-bold text-slate-400">kg</span>
               </div>
               <div class="bg-white border border-amber-300 rounded-xl px-4 py-2 text-center shrink-0">
@@ -344,7 +350,7 @@
                 <span id="sanpetDoseResult" class="text-sm font-bold text-amber-700">1/4 viên</span>
               </div>
             </div>
-            <p class="text-[11px] text-amber-800 mt-2 italic">* Bé 9 lạng (0.9kg) uống chuẩn 1/4 viên. Đợt tới cân lại bé trước khi cho uống.</p>
+            <p id="weightSanpetNote" class="text-[11px] text-amber-800 mt-2 italic">* Bé 0.9kg (~9 lạng) uống chuẩn 1/4 viên. Đợt tới cân lại bé trước khi cho uống.</p>
           </div>
 
           <div class="mt-4 space-y-3">
@@ -428,10 +434,10 @@
 
   <!-- ================= MODAL CẬP NHẬT MỐC NGÀY XỔ GIUN / TIÊM NGỪA ================= -->
   <div id="scheduleModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 class="text-base font-bold text-slate-800 font-heading flex items-center gap-2">
-          <i class="fa-solid fa-calendar-pen text-amber-500"></i> Cập nhật mốc xổ giun & tiêm ngừa
+          <i class="fa-solid fa-calendar-pen text-amber-500"></i> Cập nhật từng mốc xổ giun & tiêm ngừa
         </h3>
         <button onclick="closeScheduleModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-sm transition">
           <i class="fa-solid fa-xmark"></i>
@@ -439,39 +445,61 @@
       </div>
 
       <p class="text-xs text-slate-500">
-        Khi bạn đổi <strong>Ngày xổ giun</strong> hoặc <strong>Ngày tiêm ngừa Mũi 1</strong>, các mốc kế tiếp (xổ giun lần sau, ăn dặm, mũi 2 + dại, mũi 3) sẽ tự tính lại theo đúng khoảng cách chuẩn.
+        Bạn có thể nhập ngày riêng cho từng mũi tiêm / đợt xổ giun khi thực tế bị lệch ngày, hoặc bấm nút <strong>Tự tính lại từ ngày trên</strong> để đồng bộ theo chu kỳ.
       </p>
 
-      <div class="space-y-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Ngày sinh của bé:</label>
           <input type="date" id="inputBirthDate" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Ngày xổ giun gần nhất:</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Xổ giun đợt 1 (gần nhất):</label>
           <input type="date" id="inputDewormDate" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Ngày tiêm ngừa Mũi 1:</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Xổ giun đợt 2:</label>
+          <div class="flex gap-1.5">
+            <input type="date" id="inputDeworm2Date" class="flex-1 text-xs border border-slate-200 rounded-xl px-2.5 py-2 outline-none focus:border-amber-500">
+            <button type="button" onclick="autoFillDeworm2FromModal()" title="Tính tự động theo chu kỳ xổ giun" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-bold shrink-0">Tự tính</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tiêm ngừa Mũi 1:</label>
           <input type="date" id="inputVaccine1Date" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
         </div>
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Chu kỳ xổ giun (ngày):</label>
-            <input type="number" min="15" max="180" id="inputDewormCycle" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tiêm Mũi 2 + Dại:</label>
+          <div class="flex gap-1.5">
+            <input type="date" id="inputVaccine2Date" class="flex-1 text-xs border border-slate-200 rounded-xl px-2.5 py-2 outline-none focus:border-amber-500">
+            <button type="button" onclick="autoFillVaccine2FromModal()" title="Tính tự động cách Mũi 1" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-bold shrink-0">Tự tính</button>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Cách mũi tiêm sau (tuần):</label>
-            <input type="number" min="3" max="12" id="inputVaccineGapWeeks" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tiêm Mũi 3:</label>
+          <div class="flex gap-1.5">
+            <input type="date" id="inputVaccine3Date" class="flex-1 text-xs border border-slate-200 rounded-xl px-2.5 py-2 outline-none focus:border-amber-500">
+            <button type="button" onclick="autoFillVaccine3FromModal()" title="Tính tự động cách Mũi 2" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-bold shrink-0">Tự tính</button>
           </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Chu kỳ xổ giun (ngày):</label>
+          <input type="number" min="15" max="180" id="inputDewormCycle" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Cách mũi tiêm sau (tuần):</label>
+          <input type="number" min="3" max="12" id="inputVaccineGapWeeks" class="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-amber-500">
         </div>
       </div>
 
-      <div class="flex items-center justify-between border-t border-slate-100 pt-4 gap-2">
-        <button type="button" onclick="resetDefaultSchedule()" class="text-xs text-rose-500 hover:underline font-semibold">Mặc định</button>
+      <div class="flex flex-wrap items-center justify-between border-t border-slate-100 pt-4 gap-2">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="resetDefaultSchedule()" class="text-xs text-rose-500 hover:underline font-semibold">Mặc định</button>
+          <button type="button" onclick="recalcAllInModal()" class="text-xs text-indigo-600 hover:underline font-semibold">Tính lại toàn bộ mốc sau</button>
+        </div>
         <div class="flex items-center gap-2">
           <button type="button" onclick="closeScheduleModal()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Hủy</button>
-          <button type="button" onclick="saveScheduleConfig()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl shadow-xs">Lưu & Tự tính lại</button>
+          <button type="button" onclick="saveScheduleConfig()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl shadow-xs">Lưu thay đổi</button>
         </div>
       </div>
     </div>
@@ -526,15 +554,13 @@
     const DEFAULT_SCHEDULE = {
       birthDate: "2026-08-29",
       lastDewormDate: "2026-10-17",
-      vaccine1Date: "2026-11-03",
+      deworm2Date: "2026-11-16",
+      vaccine1Date: "2026-11-20",
+      vaccine2Date: "2027-01-01",
+      vaccine3Date: "2027-02-12",
       dewormCycleDays: 30,
       vaccineGapWeeks: 6
     };
-
-    function getScheduleConfig() {
-      const saved = JSON.parse(localStorage.getItem('cat_schedule_config') || 'null');
-      return { ...DEFAULT_SCHEDULE, ...(saved || {}) };
-    }
 
     function parseLocalDate(isoStr) {
       const [y, m, d] = (isoStr || "").split('-').map(Number);
@@ -568,11 +594,32 @@
       return `${d}/${m}`;
     }
 
+    function getScheduleConfig() {
+      const saved = JSON.parse(localStorage.getItem('cat_schedule_config') || 'null');
+      const merged = { ...DEFAULT_SCHEDULE, ...(saved || {}) };
+      const cycle = Math.max(15, parseInt(merged.dewormCycleDays, 10) || 30);
+      const gapWeeks = Math.max(3, parseInt(merged.vaccineGapWeeks, 10) || 6);
+
+      if (!saved || !saved.deworm2Date) {
+        merged.deworm2Date = toInputDateValue(addDays(parseLocalDate(merged.lastDewormDate), cycle));
+      }
+      if (!saved || !saved.vaccine2Date) {
+        merged.vaccine2Date = toInputDateValue(addDays(parseLocalDate(merged.vaccine1Date), gapWeeks * 7));
+      }
+      if (!saved || !saved.vaccine3Date) {
+        merged.vaccine3Date = toInputDateValue(addDays(parseLocalDate(merged.vaccine2Date), gapWeeks * 7));
+      }
+      return merged;
+    }
+
     function openScheduleModal() {
       const cfg = getScheduleConfig();
       document.getElementById('inputBirthDate').value = cfg.birthDate;
       document.getElementById('inputDewormDate').value = cfg.lastDewormDate;
+      document.getElementById('inputDeworm2Date').value = cfg.deworm2Date;
       document.getElementById('inputVaccine1Date').value = cfg.vaccine1Date;
+      document.getElementById('inputVaccine2Date').value = cfg.vaccine2Date;
+      document.getElementById('inputVaccine3Date').value = cfg.vaccine3Date;
       document.getElementById('inputDewormCycle').value = cfg.dewormCycleDays;
       document.getElementById('inputVaccineGapWeeks').value = cfg.vaccineGapWeeks;
 
@@ -587,16 +634,64 @@
       modal.classList.remove('flex');
     }
 
+    function autoFillDeworm2FromModal() {
+      const d1 = parseLocalDate(document.getElementById('inputDewormDate').value || DEFAULT_SCHEDULE.lastDewormDate);
+      const cycle = Math.max(15, parseInt(document.getElementById('inputDewormCycle').value, 10) || 30);
+      document.getElementById('inputDeworm2Date').value = toInputDateValue(addDays(d1, cycle));
+    }
+
+    function autoFillVaccine2FromModal() {
+      const v1 = parseLocalDate(document.getElementById('inputVaccine1Date').value || DEFAULT_SCHEDULE.vaccine1Date);
+      const weeks = Math.max(3, parseInt(document.getElementById('inputVaccineGapWeeks').value, 10) || 6);
+      document.getElementById('inputVaccine2Date').value = toInputDateValue(addDays(v1, weeks * 7));
+    }
+
+    function autoFillVaccine3FromModal() {
+      const v2 = parseLocalDate(document.getElementById('inputVaccine2Date').value || DEFAULT_SCHEDULE.vaccine2Date);
+      const weeks = Math.max(3, parseInt(document.getElementById('inputVaccineGapWeeks').value, 10) || 6);
+      document.getElementById('inputVaccine3Date').value = toInputDateValue(addDays(v2, weeks * 7));
+    }
+
+    function recalcAllInModal() {
+      autoFillDeworm2FromModal();
+      autoFillVaccine2FromModal();
+      autoFillVaccine3FromModal();
+    }
+
     function saveScheduleConfig() {
       const cfg = {
         birthDate: document.getElementById('inputBirthDate').value || DEFAULT_SCHEDULE.birthDate,
         lastDewormDate: document.getElementById('inputDewormDate').value || DEFAULT_SCHEDULE.lastDewormDate,
+        deworm2Date: document.getElementById('inputDeworm2Date').value || DEFAULT_SCHEDULE.deworm2Date,
         vaccine1Date: document.getElementById('inputVaccine1Date').value || DEFAULT_SCHEDULE.vaccine1Date,
+        vaccine2Date: document.getElementById('inputVaccine2Date').value || DEFAULT_SCHEDULE.vaccine2Date,
+        vaccine3Date: document.getElementById('inputVaccine3Date').value || DEFAULT_SCHEDULE.vaccine3Date,
         dewormCycleDays: Math.max(15, parseInt(document.getElementById('inputDewormCycle').value, 10) || 30),
         vaccineGapWeeks: Math.max(3, parseInt(document.getElementById('inputVaccineGapWeeks').value, 10) || 6)
       };
       localStorage.setItem('cat_schedule_config', JSON.stringify(cfg));
       closeScheduleModal();
+      syncAllSchedules();
+    }
+
+    function updateSingleMilestoneDate(fieldKey, newIsoDate, cascadeFromKey = null) {
+      if (!newIsoDate) return;
+      const cfg = getScheduleConfig();
+      cfg[fieldKey] = newIsoDate;
+
+      const cycle = Math.max(15, parseInt(cfg.dewormCycleDays, 10) || 30);
+      const gapDays = (Math.max(3, parseInt(cfg.vaccineGapWeeks, 10) || 6)) * 7;
+
+      if (cascadeFromKey === 'lastDewormDate') {
+        cfg.deworm2Date = toInputDateValue(addDays(parseLocalDate(cfg.lastDewormDate), cycle));
+      } else if (cascadeFromKey === 'vaccine1Date') {
+        cfg.vaccine2Date = toInputDateValue(addDays(parseLocalDate(cfg.vaccine1Date), gapDays));
+        cfg.vaccine3Date = toInputDateValue(addDays(parseLocalDate(cfg.vaccine2Date), gapDays));
+      } else if (cascadeFromKey === 'vaccine2Date') {
+        cfg.vaccine3Date = toInputDateValue(addDays(parseLocalDate(cfg.vaccine2Date), gapDays));
+      }
+
+      localStorage.setItem('cat_schedule_config', JSON.stringify(cfg));
       syncAllSchedules();
     }
 
@@ -614,7 +709,7 @@
 
       const lastDeworm = parseLocalDate(cfg.lastDewormDate);
       const safeAfterDeworm = addDays(lastDeworm, 7);
-      const nextDeworm = addDays(lastDeworm, cfg.dewormCycleDays);
+      const nextDeworm = parseLocalDate(cfg.deworm2Date);
 
       const vac1 = parseLocalDate(cfg.vaccine1Date);
       const vac1Start = addDays(vac1, -2);
@@ -623,13 +718,12 @@
       const foodStart = addDays(vac1, 7);
       const foodEnd = addDays(vac1, 9);
 
-      const vac2 = addDays(vac1, cfg.vaccineGapWeeks * 7);
+      const vac2 = parseLocalDate(cfg.vaccine2Date);
       const vac2End = addDays(vac2, 14);
 
-      const vac3 = addDays(vac2, cfg.vaccineGapWeeks * 7);
+      const vac3 = parseLocalDate(cfg.vaccine3Date);
       const vac3End = addDays(vac3, 14);
 
-      // Cập nhật thẻ thông tin & tuổi
       document.getElementById('birthDateDisplay').textContent = formatVNDate(birthDate);
       document.getElementById('twoMonthsDateDisplay').textContent = formatVNDate(twoMonthsDate);
 
@@ -657,78 +751,85 @@
         countdownEl.className = "text-[10px] text-slate-400 block font-medium";
       }
 
-      // Cập nhật Banner xổ giun
       document.getElementById('bannerDewormTitle').textContent = `ĐÃ XỔ GIUN THÀNH CÔNG NGÀY ${formatVNDate(lastDeworm)}`;
-      document.getElementById('nextDewormBadge').textContent = `${formatVNDate(nextDeworm)} (+${cfg.dewormCycleDays} ngày)`;
+      document.getElementById('nextDewormBadge').textContent = `${formatVNDate(nextDeworm)}`;
       document.getElementById('bannerDewormDesc').innerHTML =
-        `Mốc xổ giun gần nhất là <strong>${formatVNDate(lastDeworm)}</strong> (hết cách ly 7 ngày vào <strong>${formatVNDate(safeAfterDeworm)}</strong>). Mũi tiêm 1 dự kiến vào <strong>${formatVNDate(vac1)}</strong>, đợt xổ giun kế tiếp vào <strong>${formatVNDate(nextDeworm)}</strong>.`;
+        `Xổ giun đợt 1: <strong>${formatVNDate(lastDeworm)}</strong> • Xổ giun đợt 2: <strong>${formatVNDate(nextDeworm)}</strong> • Tiêm Mũi 1: <strong>${formatVNDate(vac1)}</strong> • Tiêm Mũi 2 + Dại: <strong>${formatVNDate(vac2)}</strong>.`;
 
-      // Cập nhật ghi chú quy tắc
       document.getElementById('dynamicRuleNote').innerHTML = `
         <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
         <div>
-          <strong>Lịch tự động hiện tại:</strong> Xổ giun ngày <strong>${formatVNDate(lastDeworm)}</strong> → Tắm/mốc 2 tháng <strong>${formatVNDate(bathDate)}</strong> → Tiêm Mũi 1 dự kiến <strong>${formatVNDate(vac1)}</strong> → Tập ăn dặm từ <strong>${formatVNDate(foodStart)}</strong> → Xổ giun kế tiếp <strong>${formatVNDate(nextDeworm)}</strong> → Mũi 2 + Dại từ <strong>${formatVNDate(vac2)}</strong>.
+          <strong>Lịch hiện tại:</strong> Xổ giun 1: <strong>${formatVNDate(lastDeworm)}</strong> → Tắm/mốc 2 tháng: <strong>${formatVNDate(bathDate)}</strong> → Xổ giun 2: <strong>${formatVNDate(nextDeworm)}</strong> → Mũi 1: <strong>${formatVNDate(vac1)}</strong> → Ăn dặm: <strong>${formatVNDate(foodStart)}</strong> → Mũi 2 + Dại: <strong>${formatVNDate(vac2)}</strong> → Mũi 3: <strong>${formatVNDate(vac3)}</strong>.
         </div>
       `;
 
-      // Render Timeline
       const items = [
         {
           id: 'task_deworm1',
-          dateLabel: formatVNDate(lastDeworm),
-          title: `Xổ giun đợt gần nhất (${formatVNDate(lastDeworm)})`,
-          badge: 'Đã ghi nhận',
+          fieldKey: 'lastDewormDate',
+          cascadeKey: 'lastDewormDate',
+          isoValue: cfg.lastDewormDate,
+          title: `Xổ giun đợt 1 (${formatVNDate(lastDeworm)})`,
+          badge: 'Đợt 1',
           badgeClass: 'bg-emerald-200 text-emerald-900',
-          desc: `Đã uống thuốc xổ giun ngày ${formatVNDate(lastDeworm)}. Đủ 7 ngày theo dõi/cách ly vào ${formatVNDate(safeAfterDeworm)}.`,
+          desc: `Hết cách ly 7 ngày vào ${formatVNDate(safeAfterDeworm)}. Đổi ngày sẽ tự dời xổ giun đợt 2 nếu bấm "Tính sau".`,
           checkedByDefault: true
         },
         {
           id: 'task_2months',
-          dateLabel: formatVNDate(bathDate),
+          fieldKey: null,
           title: `${formatVNDate(bathDate)}: Mốc ~2 tháng tuổi - Tắm lần đầu`,
           badge: 'Mốc quan trọng',
           badgeClass: 'bg-amber-100 text-amber-800',
           desc: 'Chỉ tắm vào buổi trưa có nắng ấm, phòng kín gió. Tắm nhanh và sấy khô kiệt chân lông lập tức.'
         },
         {
+          id: 'task_deworm2',
+          fieldKey: 'deworm2Date',
+          cascadeKey: null,
+          isoValue: cfg.deworm2Date,
+          title: `${formatVNDate(nextDeworm)}: Xổ giun đợt 2`,
+          badge: 'Định kỳ',
+          badgeClass: 'bg-slate-100 text-slate-700',
+          desc: 'Có thể chọn ngày riêng cho đợt 2. Cân lại bé để chia liều Sanpet (1 viên cho 4kg thể trọng).'
+        },
+        {
           id: 'task_vaccine1',
-          dateLabel: `${formatShortVN(vac1Start)} - ${formatShortVN(vac1End)}/${vac1.getFullYear()}`,
+          fieldKey: 'vaccine1Date',
+          cascadeKey: 'vaccine1Date',
+          isoValue: cfg.vaccine1Date,
           title: `${formatShortVN(vac1Start)} - ${formatShortVN(vac1End)}/${vac1.getFullYear()}: Tiêm ngừa Mũi 1 (4 bệnh)`,
-          badge: 'Vaccine',
+          badge: 'Mũi 1',
           badgeClass: 'bg-indigo-100 text-indigo-800',
-          desc: `Mốc chuẩn ${formatVNDate(vac1)}. Cách đợt tắm 2-3 ngày và đợt xổ giun ${formatVNDate(lastDeworm)}. Chỉ đưa đi tiêm khi bé khỏe mạnh 100%.`
+          desc: `Mốc chuẩn ${formatVNDate(vac1)}. Cách đợt tắm 2-3 ngày và đợt xổ giun. Chỉ đưa đi tiêm khi bé khỏe mạnh 100%.`
         },
         {
           id: 'task_food',
-          dateLabel: `${formatShortVN(foodStart)} - ${formatShortVN(foodEnd)}/${foodStart.getFullYear()}`,
+          fieldKey: null,
           title: `${formatShortVN(foodStart)} - ${formatShortVN(foodEnd)}/${foodStart.getFullYear()}: Tập ăn dặm (Pate/Hạt)`,
           badge: 'Dinh dưỡng',
           badgeClass: 'bg-teal-100 text-teal-800',
-          desc: `Tự động tính sau Mũi 1 (${formatVNDate(vac1)}) 7 ngày. Chét một chút súp thưởng/pate lên ngón tay đút mép miệng để bé tự liếm.`
-        },
-        {
-          id: 'task_deworm2',
-          dateLabel: formatVNDate(nextDeworm),
-          title: `${formatVNDate(nextDeworm)}: Xổ giun định kỳ kế tiếp`,
-          badge: `Sau ${cfg.dewormCycleDays} ngày`,
-          badgeClass: 'bg-slate-100 text-slate-700',
-          desc: `Tự động tính từ ${formatVNDate(lastDeworm)} (+${cfg.dewormCycleDays} ngày). Cân lại bé để chia liều Sanpet (1 viên cho 4kg thể trọng).`
+          desc: `Sau Mũi 1 (${formatVNDate(vac1)}) 7 ngày. Chét một chút súp thưởng/pate lên ngón tay đút mép miệng để bé tự liếm.`
         },
         {
           id: 'task_vaccine2',
-          dateLabel: `${formatShortVN(vac2)} - ${formatShortVN(vac2End)}/${vac2.getFullYear()}`,
+          fieldKey: 'vaccine2Date',
+          cascadeKey: 'vaccine2Date',
+          isoValue: cfg.vaccine2Date,
           title: `${formatShortVN(vac2)} - ${formatShortVN(vac2End)}/${vac2.getFullYear()}: Tiêm Mũi 2 + Mũi Dại`,
-          badge: `Cách Mũi 1 ${cfg.vaccineGapWeeks} tuần`,
+          badge: 'Mũi 2 + Dại',
           badgeClass: 'bg-indigo-100 text-indigo-800',
-          desc: `Tự động tính cách Mũi 1 (${formatVNDate(vac1)}) ${cfg.vaccineGapWeeks} tuần. Tiêm vaccine 4 bệnh mũi 2 kèm mũi phòng bệnh Dại đầu tiên.`
+          desc: `Mốc chuẩn ${formatVNDate(vac2)}. Có thể sửa riêng ngày này nếu đi tiêm lệch lịch.`
         },
         {
           id: 'task_vaccine3',
-          dateLabel: `${formatShortVN(vac3)} - ${formatShortVN(vac3End)}/${vac3.getFullYear()}`,
+          fieldKey: 'vaccine3Date',
+          cascadeKey: null,
+          isoValue: cfg.vaccine3Date,
           title: `${formatShortVN(vac3)} - ${formatShortVN(vac3End)}/${vac3.getFullYear()}: Tiêm Mũi 3 (Mũi hoàn tất năm 1)`,
-          badge: `Cách Mũi 2 ${cfg.vaccineGapWeeks} tuần`,
+          badge: 'Mũi 3',
           badgeClass: 'bg-indigo-100 text-indigo-800',
-          desc: `Tự động tính cách Mũi 2 (${formatVNDate(vac2)}) ${cfg.vaccineGapWeeks} tuần. Hoàn thành 3 mũi 4 bệnh + dại trước 1 tuổi.`
+          desc: `Mốc chuẩn ${formatVNDate(vac3)}. Hoàn thành 3 mũi 4 bệnh + dại trước 1 tuổi.`
         }
       ];
 
@@ -736,15 +837,24 @@
       container.innerHTML = items.map(item => {
         const savedVal = localStorage.getItem(`task_${item.id}`);
         const isChecked = savedVal !== null ? savedVal === 'true' : !!item.checkedByDefault;
+        const dateControls = item.fieldKey ? `
+          <div class="mt-2 flex flex-wrap items-center gap-2">
+            <label class="text-[11px] text-slate-500 font-medium">Ngày mốc:</label>
+            <input type="date" value="${item.isoValue}" onchange="updateSingleMilestoneDate('${item.fieldKey}', this.value, null)" class="text-[11px] bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-700 outline-none focus:border-indigo-500">
+            ${item.cascadeKey ? `<button type="button" onclick="updateSingleMilestoneDate('${item.fieldKey}', '${item.isoValue}', '${item.cascadeKey}')" class="text-[11px] font-semibold text-indigo-600 hover:underline">Tự tính các mốc sau</button>` : ''}
+          </div>
+        ` : '';
+
         return `
           <div class="p-3.5 rounded-2xl border ${isChecked ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200 bg-white hover:border-amber-300'} transition flex items-start gap-3">
             <input type="checkbox" task-id="${item.id}" ${isChecked ? 'checked' : ''} onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
-            <div class="flex-1">
+            <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="text-xs font-bold ${isChecked ? 'text-emerald-900 line-through' : 'text-slate-800'}">${item.title}</span>
                 <span class="text-[10px] ${item.badgeClass} px-2 py-0.5 rounded-full font-semibold">${item.badge}</span>
               </div>
               <p class="text-xs text-slate-600 mt-0.5">${item.desc}</p>
+              ${dateControls}
             </div>
           </div>
         `;
@@ -815,23 +925,52 @@
       reader.readAsDataURL(file);
     }
 
-    // Tính liều Sanpet (1 viên / 4kg)
-    function calculateSanpetDose() {
-      const weight = parseFloat(document.getElementById('catWeightInput').value) || 0;
-      const resEl = document.getElementById('sanpetDoseResult');
-      if (weight <= 0) {
-        resEl.textContent = '0 viên';
-        return;
+    // Đồng bộ cân nặng giữa thẻ thông tin bé và ô tính liều Sanpet
+    function updateWeightEverywhere(rawValue) {
+      const weight = parseFloat(rawValue);
+      const safeWeight = Number.isFinite(weight) && weight > 0 ? weight : 0;
+
+      const profileInput = document.getElementById('profileWeightInput');
+      const doseInput = document.getElementById('catWeightInput');
+      if (profileInput && document.activeElement !== profileInput) {
+        profileInput.value = rawValue;
       }
-      const ratio = weight / 4;
-      if (ratio <= 0.28) {
-        resEl.textContent = '1/4 viên';
-      } else if (ratio <= 0.55) {
-        resEl.textContent = '1/2 viên';
-      } else if (ratio <= 0.85) {
-        resEl.textContent = '3/4 viên';
+      if (doseInput && document.activeElement !== doseInput) {
+        doseInput.value = rawValue;
+      }
+
+      if (safeWeight > 0) {
+        localStorage.setItem('cat_weight_kg', String(safeWeight));
+      }
+
+      const lang = Math.round(safeWeight * 10);
+      const langNoteEl = document.getElementById('weightLangNote');
+      if (langNoteEl) {
+        langNoteEl.textContent = safeWeight > 0 ? `~ ${lang} lạng` : 'Nhập cân nặng';
+      }
+
+      const resEl = document.getElementById('sanpetDoseResult');
+      const noteEl = document.getElementById('weightSanpetNote');
+      let doseText = '0 viên';
+      if (safeWeight <= 0) {
+        doseText = '0 viên';
       } else {
-        resEl.textContent = `${ratio.toFixed(2)} viên`;
+        const ratio = safeWeight / 4;
+        if (ratio <= 0.28) {
+          doseText = '1/4 viên';
+        } else if (ratio <= 0.55) {
+          doseText = '1/2 viên';
+        } else if (ratio <= 0.85) {
+          doseText = '3/4 viên';
+        } else {
+          doseText = `${ratio.toFixed(2)} viên`;
+        }
+      }
+      if (resEl) resEl.textContent = doseText;
+      if (noteEl) {
+        noteEl.textContent = safeWeight > 0
+          ? `* Bé ${safeWeight}kg (~${lang} lạng) tính ra liều ${doseText} (chuẩn 1 viên/4kg).`
+          : '* Nhập cân nặng hợp lệ để tính liều Sanpet.';
       }
     }
 
@@ -1024,8 +1163,9 @@
       if (savedAvatar) {
         document.getElementById('catAvatar').src = savedAvatar;
       }
+      const savedWeight = localStorage.getItem('cat_weight_kg') || '0.9';
+      updateWeightEverywhere(savedWeight);
       syncAllSchedules();
-      calculateSanpetDose();
       renderHealthLogs();
       initSignaturePad();
       renderSignatures();
