@@ -71,26 +71,26 @@
 
   <main class="max-w-6xl mx-auto px-4 pt-6 space-y-6">
 
-    <!-- ================= THÔNG BÁO QUAN TRỌNG: XỔ GIUN & TỰ ĐỘNG ĐIỀU CHỈNH ================= -->
-    <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <!-- ================= BANNER SỰ KIỆN KẾ TIẾP TỰ ĐỘNG ================= -->
+    <div id="upcomingBannerCard" class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div class="flex items-start gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-xl shadow-xs">
-          <i class="fa-solid fa-circle-check"></i>
+        <div id="upcomingBannerIcon" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-xl shadow-xs">
+          <i class="fa-solid fa-calendar-day"></i>
         </div>
         <div>
           <div class="flex flex-wrap items-center gap-2">
-            <h2 id="bannerDewormTitle" class="text-base font-bold text-emerald-950 font-heading">ĐÃ XỔ GIUN THÀNH CÔNG NGÀY 17/10/2026</h2>
-            <span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md font-bold">1/4 viên Sanpet</span>
+            <h2 id="bannerDewormTitle" class="text-base font-bold text-emerald-950 font-heading">SỰ KIỆN KẾ TIẾP</h2>
+            <span id="upcomingBannerTag" class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md font-bold">Tự động</span>
             <button onclick="openScheduleModal()" class="text-[11px] underline text-emerald-800 hover:text-emerald-950 font-semibold">Sửa ngày</button>
           </div>
           <p id="bannerDewormDesc" class="text-xs sm:text-sm text-emerald-800 mt-1 leading-relaxed">
-            Mốc xổ giun gần nhất là 17/10/2026. Hiện tại chỉ cần giữ ấm, quan sát phân khuôn đẹp, theo dõi mắt/mũi để chuẩn bị tiêm vaccine Mũi 1.
+            Đang tự động đồng bộ sự kiện tiếp theo tính từ ngày hiện tại.
           </p>
         </div>
       </div>
-      <div class="shrink-0 w-full sm:w-auto bg-white/80 border border-emerald-200 rounded-xl px-4 py-2 text-center">
-        <span class="text-[11px] uppercase tracking-wider text-emerald-700 font-bold block">Đợt xổ giun kế tiếp</span>
-        <span id="nextDewormBadge" class="text-sm font-bold text-emerald-900 font-heading">16/11/2026</span>
+      <div id="upcomingBannerSideBox" class="shrink-0 w-full sm:w-auto bg-white/80 border border-emerald-200 rounded-xl px-4 py-2 text-center">
+        <span id="nextDewormLabel" class="text-[11px] uppercase tracking-wider text-emerald-700 font-bold block">Mốc kế tiếp</span>
+        <span id="nextDewormBadge" class="text-sm font-bold text-emerald-900 font-heading">--/--/----</span>
       </div>
     </div>
 
@@ -218,7 +218,7 @@
               </div>
               <div>
                 <h3 class="text-base font-bold text-slate-800 font-heading">Lịch trình y tế & Các mốc quan trọng</h3>
-                <p class="text-[11px] text-slate-400">Có thể đổi ngày trực tiếp trên từng mốc hoặc bấm nút "Tự tính lại sau mốc này"</p>
+                <p class="text-[11px] text-slate-400">Tick hoàn thành hoặc đổi ngày trực tiếp trên từng mốc</p>
               </div>
             </div>
             <button onclick="openScheduleModal()" class="text-xs font-semibold text-indigo-600 hover:underline">
@@ -445,7 +445,7 @@
       </div>
 
       <p class="text-xs text-slate-500">
-        Bạn có thể nhập ngày riêng cho từng mũi tiêm / đợt xổ giun khi thực tế bị lệch ngày, hoặc bấm nút <strong>Tự tính lại từ ngày trên</strong> để đồng bộ theo chu kỳ.
+        Bạn có thể nhập ngày riêng cho từng mũi tiêm / đợt xổ giun khi thực tế bị lệch ngày, hoặc bấm nút <strong>Tự tính</strong> để đồng bộ theo chu kỳ.
       </p>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -751,33 +751,25 @@
         countdownEl.className = "text-[10px] text-slate-400 block font-medium";
       }
 
-      document.getElementById('bannerDewormTitle').textContent = `ĐÃ XỔ GIUN THÀNH CÔNG NGÀY ${formatVNDate(lastDeworm)}`;
-      document.getElementById('nextDewormBadge').textContent = `${formatVNDate(nextDeworm)}`;
-      document.getElementById('bannerDewormDesc').innerHTML =
-        `Xổ giun đợt 1: <strong>${formatVNDate(lastDeworm)}</strong> • Xổ giun đợt 2: <strong>${formatVNDate(nextDeworm)}</strong> • Tiêm Mũi 1: <strong>${formatVNDate(vac1)}</strong> • Tiêm Mũi 2 + Dại: <strong>${formatVNDate(vac2)}</strong>.`;
-
-      document.getElementById('dynamicRuleNote').innerHTML = `
-        <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
-        <div>
-          <strong>Lịch hiện tại:</strong> Xổ giun 1: <strong>${formatVNDate(lastDeworm)}</strong> → Tắm/mốc 2 tháng: <strong>${formatVNDate(bathDate)}</strong> → Xổ giun 2: <strong>${formatVNDate(nextDeworm)}</strong> → Mũi 1: <strong>${formatVNDate(vac1)}</strong> → Ăn dặm: <strong>${formatVNDate(foodStart)}</strong> → Mũi 2 + Dại: <strong>${formatVNDate(vac2)}</strong> → Mũi 3: <strong>${formatVNDate(vac3)}</strong>.
-        </div>
-      `;
-
       const items = [
         {
           id: 'task_deworm1',
           fieldKey: 'lastDewormDate',
           cascadeKey: 'lastDewormDate',
           isoValue: cfg.lastDewormDate,
+          dateObj: lastDeworm,
+          shortLabel: `Xổ giun đợt 1 (${formatVNDate(lastDeworm)})`,
           title: `Xổ giun đợt 1 (${formatVNDate(lastDeworm)})`,
           badge: 'Đợt 1',
           badgeClass: 'bg-emerald-200 text-emerald-900',
-          desc: `Hết cách ly 7 ngày vào ${formatVNDate(safeAfterDeworm)}. Đổi ngày sẽ tự dời xổ giun đợt 2 nếu bấm "Tính sau".`,
+          desc: `Hết cách ly 7 ngày vào ${formatVNDate(safeAfterDeworm)}. Đổi ngày sẽ tự dời xổ giun đợt 2 nếu bấm "Tính các mốc sau".`,
           checkedByDefault: true
         },
         {
           id: 'task_2months',
           fieldKey: null,
+          dateObj: bathDate,
+          shortLabel: `Tắm lần đầu (~2 tháng)`,
           title: `${formatVNDate(bathDate)}: Mốc ~2 tháng tuổi - Tắm lần đầu`,
           badge: 'Mốc quan trọng',
           badgeClass: 'bg-amber-100 text-amber-800',
@@ -788,6 +780,8 @@
           fieldKey: 'deworm2Date',
           cascadeKey: null,
           isoValue: cfg.deworm2Date,
+          dateObj: nextDeworm,
+          shortLabel: `Xổ giun đợt 2`,
           title: `${formatVNDate(nextDeworm)}: Xổ giun đợt 2`,
           badge: 'Định kỳ',
           badgeClass: 'bg-slate-100 text-slate-700',
@@ -798,6 +792,8 @@
           fieldKey: 'vaccine1Date',
           cascadeKey: 'vaccine1Date',
           isoValue: cfg.vaccine1Date,
+          dateObj: vac1,
+          shortLabel: `Tiêm Mũi 1 (4 bệnh)`,
           title: `${formatShortVN(vac1Start)} - ${formatShortVN(vac1End)}/${vac1.getFullYear()}: Tiêm ngừa Mũi 1 (4 bệnh)`,
           badge: 'Mũi 1',
           badgeClass: 'bg-indigo-100 text-indigo-800',
@@ -806,6 +802,8 @@
         {
           id: 'task_food',
           fieldKey: null,
+          dateObj: foodStart,
+          shortLabel: `Tập ăn dặm`,
           title: `${formatShortVN(foodStart)} - ${formatShortVN(foodEnd)}/${foodStart.getFullYear()}: Tập ăn dặm (Pate/Hạt)`,
           badge: 'Dinh dưỡng',
           badgeClass: 'bg-teal-100 text-teal-800',
@@ -816,6 +814,8 @@
           fieldKey: 'vaccine2Date',
           cascadeKey: 'vaccine2Date',
           isoValue: cfg.vaccine2Date,
+          dateObj: vac2,
+          shortLabel: `Tiêm Mũi 2 + Dại`,
           title: `${formatShortVN(vac2)} - ${formatShortVN(vac2End)}/${vac2.getFullYear()}: Tiêm Mũi 2 + Mũi Dại`,
           badge: 'Mũi 2 + Dại',
           badgeClass: 'bg-indigo-100 text-indigo-800',
@@ -826,6 +826,8 @@
           fieldKey: 'vaccine3Date',
           cascadeKey: null,
           isoValue: cfg.vaccine3Date,
+          dateObj: vac3,
+          shortLabel: `Tiêm Mũi 3`,
           title: `${formatShortVN(vac3)} - ${formatShortVN(vac3End)}/${vac3.getFullYear()}: Tiêm Mũi 3 (Mũi hoàn tất năm 1)`,
           badge: 'Mũi 3',
           badgeClass: 'bg-indigo-100 text-indigo-800',
@@ -833,10 +835,66 @@
         }
       ];
 
-      const container = document.getElementById('timelineContainer');
-      container.innerHTML = items.map(item => {
+      const enrichedItems = items.map(item => {
         const savedVal = localStorage.getItem(`task_${item.id}`);
         const isChecked = savedVal !== null ? savedVal === 'true' : !!item.checkedByDefault;
+        const mDate = new Date(item.dateObj.getFullYear(), item.dateObj.getMonth(), item.dateObj.getDate());
+        const dayDelta = Math.ceil((mDate - todayMidnight) / (1000 * 60 * 60 * 24));
+        return { ...item, isChecked, dayDelta };
+      });
+
+      // Chọn sự kiện kế tiếp: ưu tiên mốc chưa hoàn thành sớm nhất kể từ hôm nay trở đi;
+      // nếu mọi mốc tương lai đều đã xong hoặc có mốc quá khứ chưa tick, hiển thị hợp lý không kẹt mốc cũ đã làm.
+      const upcomingUnchecked = enrichedItems.filter(it => !it.isChecked && it.dayDelta >= 0);
+      const overdueUnchecked = enrichedItems.filter(it => !it.isChecked && it.dayDelta < 0);
+      const nextFromToday = enrichedItems.filter(it => it.dayDelta >= 0);
+
+      const primaryEvent = upcomingUnchecked[0] || overdueUnchecked[0] || nextFromToday[0] || enrichedItems[enrichedItems.length - 1];
+      const sideEvent = upcomingUnchecked[1] || upcomingUnchecked[0] || nextFromToday[0] || primaryEvent;
+
+      const isOverdueWarning = primaryEvent && !primaryEvent.isChecked && primaryEvent.dayDelta < 0;
+      const bannerCard = document.getElementById('upcomingBannerCard');
+      const bannerIcon = document.getElementById('upcomingBannerIcon');
+      const bannerTag = document.getElementById('upcomingBannerTag');
+
+      if (isOverdueWarning) {
+        bannerCard.className = "bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4";
+        bannerIcon.className = "w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 text-xl shadow-xs";
+        bannerTag.className = "text-xs bg-amber-200 text-amber-950 px-2 py-0.5 rounded-md font-bold";
+        bannerTag.textContent = `Đã qua ${Math.abs(primaryEvent.dayDelta)} ngày • Chưa tick`;
+      } else {
+        bannerCard.className = "bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4";
+        bannerIcon.className = "w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-xl shadow-xs";
+        bannerTag.className = "text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md font-bold";
+        if (!primaryEvent.isChecked && primaryEvent.dayDelta === 0) {
+          bannerTag.textContent = "Hôm nay";
+        } else if (!primaryEvent.isChecked && primaryEvent.dayDelta > 0) {
+          bannerTag.textContent = `Còn ${primaryEvent.dayDelta} ngày`;
+        } else {
+          bannerTag.textContent = "Đã hoàn thành mốc";
+        }
+      }
+
+      document.getElementById('bannerDewormTitle').textContent =
+        `SỰ KIỆN KẾ TIẾP: ${primaryEvent.shortLabel.toUpperCase()} (${formatVNDate(primaryEvent.dateObj)})`;
+
+      document.getElementById('bannerDewormDesc').innerHTML =
+        `${primaryEvent.desc} <span class="text-slate-600">(Mốc xổ giun gần nhất: <strong>${formatVNDate(lastDeworm)}</strong>)</span>`;
+
+      document.getElementById('nextDewormLabel').textContent =
+        sideEvent.dayDelta === 0 ? "Sự kiện hôm nay" : `Mốc tiếp theo (${sideEvent.badge})`;
+      document.getElementById('nextDewormBadge').textContent =
+        `${formatVNDate(sideEvent.dateObj)}${sideEvent.dayDelta > 0 ? ` (còn ${sideEvent.dayDelta} ngày)` : ""}`;
+
+      document.getElementById('dynamicRuleNote').innerHTML = `
+        <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+        <div>
+          <strong>Lịch hiện tại:</strong> Xổ giun 1: <strong>${formatVNDate(lastDeworm)}</strong> → Tắm/mốc 2 tháng: <strong>${formatVNDate(bathDate)}</strong> → Xổ giun 2: <strong>${formatVNDate(nextDeworm)}</strong> → Mũi 1: <strong>${formatVNDate(vac1)}</strong> → Ăn dặm: <strong>${formatVNDate(foodStart)}</strong> → Mũi 2 + Dại: <strong>${formatVNDate(vac2)}</strong> → Mũi 3: <strong>${formatVNDate(vac3)}</strong>.
+        </div>
+      `;
+
+      const container = document.getElementById('timelineContainer');
+      container.innerHTML = enrichedItems.map(item => {
         const dateControls = item.fieldKey ? `
           <div class="mt-2 flex flex-wrap items-center gap-2">
             <label class="text-[11px] text-slate-500 font-medium">Ngày mốc:</label>
@@ -846,11 +904,11 @@
         ` : '';
 
         return `
-          <div class="p-3.5 rounded-2xl border ${isChecked ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200 bg-white hover:border-amber-300'} transition flex items-start gap-3">
-            <input type="checkbox" task-id="${item.id}" ${isChecked ? 'checked' : ''} onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
+          <div class="p-3.5 rounded-2xl border ${item.isChecked ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200 bg-white hover:border-amber-300'} transition flex items-start gap-3">
+            <input type="checkbox" task-id="${item.id}" ${item.isChecked ? 'checked' : ''} onchange="toggleTask(this)" class="mt-1 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 cursor-pointer">
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="text-xs font-bold ${isChecked ? 'text-emerald-900 line-through' : 'text-slate-800'}">${item.title}</span>
+                <span class="text-xs font-bold ${item.isChecked ? 'text-emerald-900 line-through' : 'text-slate-800'}">${item.title}</span>
                 <span class="text-[10px] ${item.badgeClass} px-2 py-0.5 rounded-full font-semibold">${item.badge}</span>
               </div>
               <p class="text-xs text-slate-600 mt-0.5">${item.desc}</p>
